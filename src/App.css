@@ -1,23 +1,9 @@
 .App {
-  text-align: left;
+  padding: 30px;
+  display: flex;
 }
-.App-header {
-  background-color: #282c34;
-  min-height: 100px;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
-.App-link {
-  color: #61dafb;
-}
-.main {
-  min-width: 300px;
-  text-align: left;
-  display: inline-block;
-  margin: 20px;
-  padding: 5px;
-  box-shadow: 2px 2px 2px 1px rgba(0, 0, 255, .2);
-  border-radius: 5px;
-  border: 1px solid rgba(0, 0, 255, .2);
+
+.App > div {
+  margin-right: 50px;
 }
 
