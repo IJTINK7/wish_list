@@ -15,7 +15,6 @@ export const WishList = (props: WishListPropsType) => {
 					<option selected>Select OS</option>
 					<option value="Android">Android</option>
 					<option value="iOS">iOS</option>
-					<option value="Windows Phone">Windows Phone</option>
 				</select>
 				<button>Add</button>
 			</div>
@@ -24,13 +23,9 @@ export const WishList = (props: WishListPropsType) => {
 					return (
 						<li key={el.id}>
 							<input type="checkbox" checked={el.checked}/>
-							<span onDoubleClick={() => {
-								alert("Ho")
-							}}> {el.title} </span>
+							<span> {el.title} </span>
 							<span> / OS: </span>
-							<span onDoubleClick={() => {
-								alert("He")
-							}}> {el.OS} </span>
+							<span> {el.OS} </span>
 							<button>X</button>
 						</li>
 					)

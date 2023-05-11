@@ -20,9 +20,9 @@ function App() {
 	const [wishes, setWishes] = useState<WishesType>({
 		category: "Phones",
 		data: [
-			{id: 1, title: 'Samsung Galaxy S23', OS: "Android", price: 1300, checked: false},
-			{id: 2, title: 'IPhone 13 ProMax', OS: "iOS", price: 1200, checked: false},
-			{id: 3, title: 'Xiaomi 13', OS: "Android", price: 1000, checked: false},
+			{id: 1, title: 'Samsung Galaxy S23', OS: "Android", price: 1300, checked: true},
+			{id: 2, title: 'IPhone 13 ProMax', OS: "iOS", price: 1200, checked: true},
+			{id: 3, title: 'Xiaomi 13', OS: "Android", price: 1000, checked: true},
 			{id: 4, title: 'Huawei', OS: "Android", price: 900, checked: false},
 			{id: 5, title: 'Iphone 14', OS: "iOS", price: 1400, checked: false},
 		]
