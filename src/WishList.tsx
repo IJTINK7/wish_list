@@ -1,51 +1,63 @@
-import React from 'react';
-import {WishesDataPropsType} from "./App";
+import React, {ChangeEvent, useState} from 'react';
+import {OsType, WishesDataPropsType} from "./App";
 
 export type WishListPropsType = {
 	wishes: WishesDataPropsType[]
+	addWish: (newTitle: string, newOs: OsType)=> void
 }
 
 export const WishList = (props: WishListPropsType) => {
+	const [newTitle, setNewTitle] = useState<string>("")
+	const [newOs, setNewOs] = useState<OsType>("All")
+	const addWishHandler = (e: ChangeEvent<HTMLInputElement>) => {
+		setNewTitle(e.currentTarget.value)
+	}
+	const addNewTitleHandler = () => {
+		props.addWish(newTitle.trim(), newOs)
+		setNewTitle("")
+	}
+	const changeOSHandler = (e: ChangeEvent<HTMLSelectElement>) => {
+		setNewOs(e.currentTarget.value as OsType)
+	}
 	return (
+		<div>
+			<h1>Phones</h1>
 			<div>
-				<h1>Phones</h1>
+				<input placeholder={"Enter an item"}
+					   value={newTitle}
+					   onChange={addWishHandler}
+				/>
+
+				<select value={newOs} onChange={changeOSHandler}>
+					<option selected value="All">Select OS</option>
+					<option value="Android">Android</option>
+					<option value="iOS">iOS</option>
+				</select>
+
+
+				<button onClick={addNewTitleHandler}>Add</button>
+			</div>
+			<ul>
+				{props.wishes.map(el=>{
+					return <li key={el.id}><input type="checkbox"
+									  checked={el.checked}/>
+						<span> {el.title}</span>
+						<span> / OS: </span>
+						<span> {el.OS} </span>
+						<button>X</button>
+					</li>
+				})}
+			</ul>
+			<div>
+				FILTER BY:
 				<div>
-					<input placeholder={"Enter an item"}/>
 					<select>
-						<option selected value="All">Select OS</option>
+						<option value="All">All</option>
 						<option value="Android">Android</option>
 						<option value="iOS">iOS</option>
 					</select>
-					<button>Add</button>
-				</div>
-				<ul>
-					<li><input type="checkbox"
-							   checked={props.wishes[0].checked}/><span> {props.wishes[0].title}</span><span> / OS: </span><span> {props.wishes[0].OS} </span>
-						<button>X</button>
-					</li>
-					<li><input type="checkbox" checked={props.wishes[1].checked}/><span> {props.wishes[1].title} </span><span> / OS: </span><span> {props.wishes[1].OS} </span>
-						<button>X</button>
-					</li>
-					<li><input type="checkbox" checked={props.wishes[2].checked}/><span> {props.wishes[2].title} </span><span> / OS: </span><span> {props.wishes[2].OS} </span>
-						<button>X</button>
-					</li>
-					<li><input type="checkbox" checked={props.wishes[3].checked}/><span> {props.wishes[3].title} </span><span> / OS: </span><span> {props.wishes[3].OS} </span>
-						<button>X</button>
-					</li>
-					<li><input type="checkbox" checked={props.wishes[4].checked}/><span> {props.wishes[4].title} </span><span> / OS: </span><span> {props.wishes[4].OS} </span>
-						<button>X</button>
-					</li>
-				</ul>
-				<div>
-					FILTER BY:
-					<div>
-						<select>
-							<option value="All">All</option>
-							<option value="Android">Android</option>
-							<option value="iOS">iOS</option>
-						</select>
-					</div>
 				</div>
 			</div>
-		);
+		</div>
+	);
 }

@@ -11,6 +11,7 @@ export type WishesDataPropsType = {
 	OS: OsType
 	checked: boolean
 }
+
 function App() {
 	const [wishes, setWishes] = useState<WishesDataPropsType[]>([
 		{id: v1(), title: 'Samsung Galaxy S23', OS: "Android", checked: true},
@@ -20,10 +21,18 @@ function App() {
 		{id: v1(), title: 'Iphone 14', OS: "iOS", checked: false},
 	])
 
-		return (
-			<div className="App">
-				<WishList wishes={wishes}/>
-			</div>
-		);
+	const addWish = (newTitle: string, newOs: OsType) => {
+		const newWish:WishesDataPropsType = {id: v1(), title: newTitle, OS: newOs, checked: false}
+		setWishes([newWish, ...wishes])
 	}
+
+	return (
+		<div className="App">
+			<WishList wishes={wishes}
+					  addWish={addWish}
+			/>
+		</div>
+	);
+}
+
 export default App;
