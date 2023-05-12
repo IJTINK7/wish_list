@@ -1,39 +1,49 @@
 import React, {useState} from 'react';
 import './App.css';
 import {WishList} from "./WishList";
+import {v1} from "uuid";
 
 export type OsType = "All" | "iOS" | "Android"
 
-type PhoneDataPropsType = {
-	id: number
+export type WishesDataPropsType = {
+	id: string
 	title: string
 	OS: OsType
-	price: number
 	checked: boolean
 }
-export type WishesType = {
-	category: string
-	data: PhoneDataPropsType[]
-}
-
 function App() {
-	const [wishes, setWishes] = useState<WishesType>({
-		category: "Phones",
-		data: [
-			{id: 1, title: 'Samsung Galaxy S23', OS: "Android", price: 1300, checked: true},
-			{id: 2, title: 'IPhone 13 ProMax', OS: "iOS", price: 1200, checked: true},
-			{id: 3, title: 'Xiaomi 13', OS: "Android", price: 1000, checked: true},
-			{id: 4, title: 'Huawei', OS: "Android", price: 900, checked: false},
-			{id: 5, title: 'Iphone 14', OS: "iOS", price: 1400, checked: false},
-		]
-	})
-	return (
-		<div className="App">
-			<WishList wishes={wishes}/>
-		</div>
-	);
-}
+	const [osFilter, setOsFilter] = useState<OsType>("All")
+	const [wishes, setWishes] = useState<WishesDataPropsType[]>([
+		{id: v1(), title: 'Samsung Galaxy S23', OS: "Android", checked: true},
+		{id: v1(), title: 'IPhone 13 ProMax', OS: "iOS", checked: true},
+		{id: v1(), title: 'Xiaomi 13', OS: "Android", checked: true},
+		{id: v1(), title: 'Huawei', OS: "Android", checked: false},
+		{id: v1(), title: 'Iphone 14', OS: "iOS", checked: false},
+	])
 
+	const addItem = (newItem: string, wishFilter: OsType) => {
+		let newWishItem = {id: v1(), title: newItem, OS: wishFilter, checked: false};
+		setWishes([newWishItem, ...wishes]);
+	}
+
+	const removeTask = (taskId: string) => {
+		setWishes(wishes.filter(el => el.id !== taskId))
+	}
+
+	const ChangeOs = (osValue: OsType) => {
+		setOsFilter(osValue)
+	}
+
+	const wishesWhatWeWantToSee = osFilter === "All" ? wishes : wishes.filter(el=> el.OS === osFilter)
+		return (
+			<div className="App">
+				<WishList wishes={wishesWhatWeWantToSee}
+						  addItem={addItem}
+						  removeTask={removeTask}
+						  ChangeOs={ChangeOs}
+						  osFilter={osFilter}
+				/>
+			</div>
+		);
+	}
 export default App;
-
-
