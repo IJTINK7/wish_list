@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import './App.css';
 import {OsTypeForSelect, WishList} from "./WishList";
 import {v1} from "uuid";
+import {UseState} from "./UseState";
 
 export type OsType = "All" | "iOS" | "Android" | OsTypeForSelect
 
@@ -21,12 +22,11 @@ function App() {
 		{id: v1(), title: 'Iphone 14', OS: "iOS", checked: false},
 	])
 
+
 	const addItem = (newItem: string, wishFilter: OsTypeForSelect) => {
 		let newWishItem = {id: v1(), title: newItem, OS: wishFilter, checked: false};
 		setWishes([newWishItem, ...wishes]);
 	}
-
-
 
 	const wishesWhatWeWantToSee = osFilter === "All" ? wishes : wishes.filter(el=> el.OS === osFilter)
 		return (
@@ -35,6 +35,7 @@ function App() {
 						  addItem={addItem}
 						  osFilter={osFilter}
 				/>
+				<UseState/>
 			</div>
 		);
 	}
