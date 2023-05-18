@@ -29,13 +29,13 @@ function App() {
 	const removeWish = (id: string) => {
 		setWishes(wishes.filter(el => el.id !== id))
 	}
-
 	const wishesWhatWeWantToSee = osFilter === "All" ? wishes : wishes.filter(el => el.OS === osFilter)
 	return (
 		<div className="App">
 			<WishList wishes={wishesWhatWeWantToSee}
 					  addNewWish={addNewWish}
 					  osFilter={osFilter}
+					  setOsFilter={setOsFilter}
 					  newWishTitle={newWishTitle}
 					  setNewWishTitle={setNewWishTitle}
 					  removeWish={removeWish}
