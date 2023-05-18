@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import './App.css';
-import {OsTypeForSelect, WishList} from "./WishList";
+import {OsTypeForSelect, StatusTypeForSelect, WishList} from "./WishList";
 import {v1} from "uuid";
 
 export type OsType = "All" | "iOS" | "Android" | OsTypeForSelect
@@ -14,6 +14,7 @@ export type WishesDataPropsType = {
 
 function App() {
 	const [osFilter, setOsFilter] = useState<OsType>("All")
+	const [statusFilter, setStatusFilter] = useState<StatusTypeForSelect>("All")
 	const [newWishTitle, setNewWishTitle] = useState<string>("")
 	const [wishes, setWishes] = useState<WishesDataPropsType[]>([
 		{id: v1(), title: 'Samsung Galaxy S23', OS: "Android", checked: true},
@@ -29,7 +30,11 @@ function App() {
 	const removeWish = (id: string) => {
 		setWishes(wishes.filter(el => el.id !== id))
 	}
-	const wishesWhatWeWantToSee = osFilter === "All" ? wishes : wishes.filter(el => el.OS === osFilter)
+	const wishesWhatWeWantToSee = (osFilter === "All" ? wishes : wishes.filter(el => el.OS === osFilter))
+
+	||
+
+		(statusFilter === "All" ? wishes : statusFilter === "Completed" ? wishes.filter(el => el.checked): wishes.filter(el => !el.checked))
 
 	const changeWishStatus = (wishId:string, isDone:boolean) => {
 		console.log(wishId)
@@ -47,6 +52,8 @@ function App() {
 					  setNewWishTitle={setNewWishTitle}
 					  removeWish={removeWish}
 					  changeWishStatus={changeWishStatus}
+					  statusFilter={statusFilter}
+					  setStatusFilter={setStatusFilter}
 			/>
 		</div>
 	);

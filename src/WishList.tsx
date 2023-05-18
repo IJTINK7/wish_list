@@ -2,11 +2,14 @@ import React, {ChangeEvent, KeyboardEvent, useState} from 'react';
 import {OsType, WishesDataPropsType} from "./App";
 
 export type OsTypeForSelect = "Android" | "iOS" | "Select OS"
+export type StatusTypeForSelect = "All" | "Active" | "Completed"
 
 export type WishListPropsType = {
 	wishes: WishesDataPropsType[]
 	osFilter: OsType
 	setOsFilter: (text: OsType) => void
+	statusFilter: StatusTypeForSelect
+	setStatusFilter: (text: StatusTypeForSelect) => void
 	addNewWish: (oS: OsTypeForSelect) => void
 	newWishTitle: string
 	setNewWishTitle: (text: string) => void
@@ -34,15 +37,17 @@ export const WishList = (props: WishListPropsType) => {
 			addWishHandler()
 		}
 	}
-
+	const removeWishHandler = (id: string) => {
+		props.removeWish(id)
+	}
 	const onChangeOSHandler = (e: ChangeEvent<HTMLSelectElement>) => {
 		setOS(e.currentTarget.value as OsTypeForSelect)
 	}
 	const onChangeFilterOSHandler = (e: ChangeEvent<HTMLSelectElement>) => {
 		props.setOsFilter(e.currentTarget.value as OsType)
 	}
-	const removeWishHandler = (id: string) => {
-		props.removeWish(id)
+	const onChangeFilterStatusHandler = (e: ChangeEvent<HTMLSelectElement>) => {
+		props.setStatusFilter(e.currentTarget.value as StatusTypeForSelect)
 	}
 
 	return (
@@ -77,14 +82,26 @@ export const WishList = (props: WishListPropsType) => {
 					)
 				})}
 			</ul>
-			<div>
-				FILTER BY:
+			<div style={{ display: "flex", justifyContent: "space-between"}}>
+				<div style={{ marginRight: "20px"}}>
+					FILTER BY OS:
+					<div>
+						<select value={props.osFilter} onChange={onChangeFilterOSHandler}>
+							<option value={"All"}>All</option>
+							<option value={"Android"}>Android</option>
+							<option value={"iOS"}>iOS</option>
+						</select>
+					</div>
+				</div>
 				<div>
-					<select value={props.osFilter} onChange={onChangeFilterOSHandler}>
-						<option value={"All"}>All</option>
-						<option value={"Android"}>Android</option>
-						<option value={"iOS"}>iOS</option>
-					</select>
+					FILTER BY ACTIVITY:
+					<div>
+						<select value={props.statusFilter} onChange={onChangeFilterStatusHandler}>
+							<option value={"All"}>All</option>
+							<option value={"Active"}>Active</option>
+							<option value={"Completed"}>Completed</option>
+						</select>
+					</div>
 				</div>
 			</div>
 		</div>
