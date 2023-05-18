@@ -30,6 +30,13 @@ function App() {
 		setWishes(wishes.filter(el => el.id !== id))
 	}
 	const wishesWhatWeWantToSee = osFilter === "All" ? wishes : wishes.filter(el => el.OS === osFilter)
+
+	const changeWishStatus = (wishId:string, isDone:boolean) => {
+		console.log(wishId)
+		console.log(isDone)
+		setWishes(wishes.map(el=>el.id === wishId ? {...el, checked:isDone}: el))
+	}
+
 	return (
 		<div className="App">
 			<WishList wishes={wishesWhatWeWantToSee}
@@ -39,6 +46,7 @@ function App() {
 					  newWishTitle={newWishTitle}
 					  setNewWishTitle={setNewWishTitle}
 					  removeWish={removeWish}
+					  changeWishStatus={changeWishStatus}
 			/>
 		</div>
 	);

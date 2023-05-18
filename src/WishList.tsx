@@ -6,11 +6,12 @@ export type OsTypeForSelect = "Android" | "iOS" | "Select OS"
 export type WishListPropsType = {
 	wishes: WishesDataPropsType[]
 	osFilter: OsType
-	setOsFilter: (text:OsType) => void
+	setOsFilter: (text: OsType) => void
 	addNewWish: (oS: OsTypeForSelect) => void
 	newWishTitle: string
 	setNewWishTitle: (text: string) => void
 	removeWish: (id: string) => void
+	changeWishStatus: (wishId: string, isDone: boolean) => void
 }
 
 export const WishList = (props: WishListPropsType) => {
@@ -21,7 +22,7 @@ export const WishList = (props: WishListPropsType) => {
 
 	const addWishHandler = () => {
 		if (oS !== "Select OS") {
-			if (props.newWishTitle.trim() !== ""){
+			if (props.newWishTitle.trim() !== "") {
 				props.addNewWish(oS)
 				props.setNewWishTitle("")
 				setOS("Select OS")
@@ -29,7 +30,7 @@ export const WishList = (props: WishListPropsType) => {
 		}
 	}
 	const onKeyDownHandler = (e: KeyboardEvent<HTMLInputElement>) => {
-		if (e.key === "Enter"){
+		if (e.key === "Enter") {
 			addWishHandler()
 		}
 	}
@@ -43,6 +44,7 @@ export const WishList = (props: WishListPropsType) => {
 	const removeWishHandler = (id: string) => {
 		props.removeWish(id)
 	}
+
 	return (
 		<div>
 			<h1>Phones</h1>
@@ -61,9 +63,12 @@ export const WishList = (props: WishListPropsType) => {
 			</div>
 			<ul>
 				{props.wishes.map(el => {
+					const changeWishStatusHandler = (e: ChangeEvent<HTMLInputElement>) => {
+						props.changeWishStatus(el.id, e.currentTarget.checked)
+					}
 					return (
 						<li key={el.id}>
-							<input type="checkbox" checked={el.checked}/>
+							<input type="checkbox" checked={el.checked} onChange={changeWishStatusHandler}/>
 							<span> {el.title} </span>
 							<span> / OS: </span>
 							<span> {el.OS} </span>
