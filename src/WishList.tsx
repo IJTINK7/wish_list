@@ -1,4 +1,4 @@
-import React, {ChangeEvent,KeyboardEvent, useState} from 'react';
+import React, {ChangeEvent, KeyboardEvent, useState} from 'react';
 import {OsType, WishesDataPropsType} from "./App";
 
 export type OsTypeForSelect = "Android" | "iOS" | "Select OS"
@@ -6,10 +6,10 @@ export type OsTypeForSelect = "Android" | "iOS" | "Select OS"
 export type WishListPropsType = {
 	wishes: WishesDataPropsType[]
 	osFilter: OsType
-	addNewWish: (os: OsTypeForSelect) => void
+	addNewWish: (oS: OsTypeForSelect) => void
 	newWishTitle: string
 	setNewWishTitle: (text: string) => void
-	removeWish: (id:string) => void
+	removeWish: (id: string) => void
 }
 
 export const WishList = (props: WishListPropsType) => {
@@ -20,15 +20,15 @@ export const WishList = (props: WishListPropsType) => {
 
 	const addWishHandler = () => {
 		if (oS !== "Select OS") {
-			if (props.newWishTitle.trim() !== "") {
+			if (props.newWishTitle.trim() !== ""){
 				props.addNewWish(oS)
 				props.setNewWishTitle("")
 				setOS("Select OS")
 			} else return
 		}
 	}
-	const onKeyDownHandler = (e:KeyboardEvent<HTMLInputElement>) => {
-		if(e.key === "Enter") {
+	const onKeyDownHandler = (e: KeyboardEvent<HTMLInputElement>) => {
+		if (e.key === "Enter"){
 			addWishHandler()
 		}
 	}
@@ -63,7 +63,7 @@ export const WishList = (props: WishListPropsType) => {
 							<span> {el.title} </span>
 							<span> / OS: </span>
 							<span> {el.OS} </span>
-							<button onClick={()=>removeWishHandler(el.id)}>X</button>
+							<button onClick={() => removeWishHandler(el.id)}>X</button>
 						</li>
 					)
 				})}
