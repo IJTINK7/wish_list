@@ -19,7 +19,10 @@ export type WishListPropsType = {
 
 export const WishList = (props: WishListPropsType) => {
 	let [oS, setOS] = useState<OsTypeForSelect>("Select OS")
+	const [error, setError] = useState<null | string>(null)
+	const [error2, setError2] = useState<null | string>(null)
 	const onNewItemChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
+		setError(null)
 		props.setNewWishTitle(e.currentTarget.value)
 	}
 
@@ -29,8 +32,10 @@ export const WishList = (props: WishListPropsType) => {
 				props.addNewWish(oS)
 				props.setNewWishTitle("")
 				setOS("Select OS")
-			} else return
-		}
+				setError2(null)
+			} else setError("Item was not selected")
+			return
+		}else setError2("OS is not selected")
 	}
 	const onKeyDownHandler = (e: KeyboardEvent<HTMLInputElement>) => {
 		if (e.key === "Enter") {
@@ -42,6 +47,9 @@ export const WishList = (props: WishListPropsType) => {
 	}
 	const onChangeOSHandler = (e: ChangeEvent<HTMLSelectElement>) => {
 		setOS(e.currentTarget.value as OsTypeForSelect)
+		if(e.currentTarget.value !== "Select OS"){
+			setError2(null)
+		}
 	}
 	const onChangeFilterOSHandler = (e: ChangeEvent<HTMLSelectElement>) => {
 		props.setOsFilter(e.currentTarget.value as OsType)
@@ -53,18 +61,27 @@ export const WishList = (props: WishListPropsType) => {
 	return (
 		<div>
 			<h1>Phones</h1>
-			<div>
-				<input placeholder={"Enter an item"}
-					   value={props.newWishTitle}
-					   onChange={onNewItemChangeHandler}
-					   onKeyDown={onKeyDownHandler}
-				/>
-				<select value={oS} onChange={onChangeOSHandler}>
-					<option value={"Select OS"}>Select OS</option>
-					<option value={"Android"}>Android</option>
-					<option value={"iOS"}>iOS</option>
-				</select>
-				<button onClick={addWishHandler}>Add</button>
+			<div style={{ display: "flex", justifyContent: "space-between"}}>
+				<div>
+					<input placeholder={"Enter an item"}
+						   className={error ? "error" : ""}
+						   value={props.newWishTitle}
+						   onChange={onNewItemChangeHandler}
+						   onKeyDown={onKeyDownHandler}
+					/>
+					{error && <div className={"error-message"}>{error}</div>}
+				</div>
+				<div>
+					<select value={oS} onChange={onChangeOSHandler}>
+						<option value={"Select OS"}>Select OS</option>
+						<option value={"Android"}>Android</option>
+						<option value={"iOS"}>iOS</option>
+					</select>
+					{error2 && <div style={{maxWidth: "80px"}} className={"error-message"}>{error2}</div>}
+				</div>
+				<div>
+					<button onClick={addWishHandler}>Add</button>
+				</div>
 			</div>
 			<ul>
 				{props.wishes.map(el => {
