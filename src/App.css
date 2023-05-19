@@ -14,3 +14,7 @@
 .error-message{
   color:red;
 }
+.selected {
+  opacity: 0.5;
+  text-decoration: line-through;
+}

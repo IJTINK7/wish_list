@@ -89,7 +89,7 @@ export const WishList = (props: WishListPropsType) => {
 						props.changeWishStatus(el.id, e.currentTarget.checked)
 					}
 					return (
-						<li key={el.id}>
+						<li key={el.id} className={el.checked ? "selected": ""}>
 							<input type="checkbox" checked={el.checked} onChange={changeWishStatusHandler}/>
 							<span> {el.title} </span>
 							<span> / OS: </span>
