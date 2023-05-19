@@ -35,7 +35,7 @@ export const WishList = (props: WishListPropsType) => {
 				setError2(null)
 			} else setError("Item was not selected")
 			return
-		}else setError2("OS is not selected")
+		} else setError2("OS is not selected")
 	}
 	const onKeyDownHandler = (e: KeyboardEvent<HTMLInputElement>) => {
 		if (e.key === "Enter") {
@@ -47,7 +47,7 @@ export const WishList = (props: WishListPropsType) => {
 	}
 	const onChangeOSHandler = (e: ChangeEvent<HTMLSelectElement>) => {
 		setOS(e.currentTarget.value as OsTypeForSelect)
-		if(e.currentTarget.value !== "Select OS"){
+		if (e.currentTarget.value !== "Select OS") {
 			setError2(null)
 		}
 	}
@@ -61,7 +61,7 @@ export const WishList = (props: WishListPropsType) => {
 	return (
 		<div>
 			<h1>Phones</h1>
-			<div style={{ display: "flex", justifyContent: "space-between"}}>
+			<div style={{display: "flex", justifyContent: "space-between"}}>
 				<div>
 					<input placeholder={"Enter an item"}
 						   className={error ? "error" : ""}
@@ -89,7 +89,7 @@ export const WishList = (props: WishListPropsType) => {
 						props.changeWishStatus(el.id, e.currentTarget.checked)
 					}
 					return (
-						<li key={el.id} className={el.checked ? "selected": ""}>
+						<li key={el.id} className={el.checked ? "selected" : ""}>
 							<input type="checkbox" checked={el.checked} onChange={changeWishStatusHandler}/>
 							<span> {el.title} </span>
 							<span> / OS: </span>
@@ -99,8 +99,8 @@ export const WishList = (props: WishListPropsType) => {
 					)
 				})}
 			</ul>
-			<div style={{ display: "flex", justifyContent: "space-between"}}>
-				<div style={{ marginRight: "20px"}}>
+			<div style={{display: "flex", justifyContent: "space-between"}}>
+				<div style={{marginRight: "20px"}}>
 					FILTER BY OS:
 					<div>
 						<select value={props.osFilter} onChange={onChangeFilterOSHandler}>

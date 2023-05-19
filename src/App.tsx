@@ -32,10 +32,10 @@ function App() {
 	}
 	const wishesWhatWeWantToSee = (osFilter === "All" ? wishes : wishes.filter(el => el.OS === osFilter))
 
-	const wishesWhatWeWantToSeeFiltered=(statusFilter === "All" ? wishesWhatWeWantToSee : statusFilter === "Completed" ? wishesWhatWeWantToSee.filter(el => el.checked): wishesWhatWeWantToSee.filter(el => !el.checked));
+	const wishesWhatWeWantToSeeFiltered = (statusFilter === "All" ? wishesWhatWeWantToSee : statusFilter === "Completed" ? wishesWhatWeWantToSee.filter(el => el.checked) : wishesWhatWeWantToSee.filter(el => !el.checked));
 
-	const changeWishStatus = (wishId:string, isDone:boolean) => {
-		setWishes(wishes.map(el=>el.id === wishId ? {...el, checked:isDone}: el))
+	const changeWishStatus = (wishId: string, isDone: boolean) => {
+		setWishes(wishes.map(el => el.id === wishId ? {...el, checked: isDone} : el))
 	}
 
 	return (
