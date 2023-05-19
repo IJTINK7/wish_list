@@ -2,13 +2,17 @@ import React, {ChangeEvent, KeyboardEvent, useState} from 'react';
 import {OsType, WishesDataPropsType} from "./App";
 
 export type OsTypeForSelect = "Android" | "iOS" | "Select OS"
+export type StatusTypeForSelect = "All" | "Active" | "Completed"
 
 export type WishListPropsType = {
 	wishes: WishesDataPropsType[]
 	osFilter: OsType
+	setOsFilter: (text: OsType) => void
+	statusFilter: StatusTypeForSelect
+	setStatusFilter: (text: StatusTypeForSelect) => void
+	addNewWish: (oS: OsTypeForSelect) => void
 	newWishTitle: string
 	setNewWishTitle: (text: string) => void
-	addNewWish: (oS: OsTypeForSelect) => void
 	removeWish: (id: string) => void
 }
 
@@ -28,17 +32,23 @@ export const WishList = (props: WishListPropsType) => {
 		}
 	}
 	const onKeyDownHandler = (e: KeyboardEvent<HTMLInputElement>) => {
-		if (e.key === "Enter"){
+		if (e.key === "Enter") {
 			addWishHandler()
 		}
-	}
-
-	const onChangeOSHandler = (e: ChangeEvent<HTMLSelectElement>) => {
-		setOS(e.currentTarget.value as OsTypeForSelect)
 	}
 	const removeWishHandler = (id: string) => {
 		props.removeWish(id)
 	}
+	const onChangeOSHandler = (e: ChangeEvent<HTMLSelectElement>) => {
+		setOS(e.currentTarget.value as OsTypeForSelect)
+	}
+	const onChangeFilterOSHandler = (e: ChangeEvent<HTMLSelectElement>) => {
+		props.setOsFilter(e.currentTarget.value as OsType)
+	}
+	const onChangeFilterStatusHandler = (e: ChangeEvent<HTMLSelectElement>) => {
+		props.setStatusFilter(e.currentTarget.value as StatusTypeForSelect)
+	}
+
 	return (
 		<div>
 			<h1>Phones</h1>
@@ -78,7 +88,7 @@ export const WishList = (props: WishListPropsType) => {
 				<div style={{marginRight: "20px"}}>
 					FILTER BY OS:
 					<div>
-						<select value={props.osFilter}>
+						<select value={props.osFilter} onChange={onChangeFilterOSHandler}>
 							<option value={"All"}>All</option>
 							<option value={"Android"}>Android</option>
 							<option value={"iOS"}>iOS</option>
@@ -88,7 +98,7 @@ export const WishList = (props: WishListPropsType) => {
 				<div>
 					FILTER BY ACTIVITY:
 					<div>
-						<select value={"Change filter"}>
+						<select value={props.statusFilter} onChange={onChangeFilterStatusHandler}>
 							<option value={"All"}>All</option>
 							<option value={"Active"}>Active</option>
 							<option value={"Completed"}>Completed</option>
