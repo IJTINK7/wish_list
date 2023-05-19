@@ -32,19 +32,15 @@ function App() {
 	}
 	const wishesWhatWeWantToSee = (osFilter === "All" ? wishes : wishes.filter(el => el.OS === osFilter))
 
-	||
-
-		(statusFilter === "All" ? wishes : statusFilter === "Completed" ? wishes.filter(el => el.checked): wishes.filter(el => !el.checked))
+	const wishesWhatWeWantToSeeFiltered=(statusFilter === "All" ? wishesWhatWeWantToSee : statusFilter === "Completed" ? wishesWhatWeWantToSee.filter(el => el.checked): wishesWhatWeWantToSee.filter(el => !el.checked));
 
 	const changeWishStatus = (wishId:string, isDone:boolean) => {
-		console.log(wishId)
-		console.log(isDone)
 		setWishes(wishes.map(el=>el.id === wishId ? {...el, checked:isDone}: el))
 	}
 
 	return (
 		<div className="App">
-			<WishList wishes={wishesWhatWeWantToSee}
+			<WishList wishes={wishesWhatWeWantToSeeFiltered}
 					  addNewWish={addNewWish}
 					  osFilter={osFilter}
 					  setOsFilter={setOsFilter}
