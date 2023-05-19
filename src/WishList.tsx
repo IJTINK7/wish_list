@@ -6,9 +6,9 @@ export type OsTypeForSelect = "Android" | "iOS" | "Select OS"
 export type WishListPropsType = {
 	wishes: WishesDataPropsType[]
 	osFilter: OsType
-	addNewWish: (oS: OsTypeForSelect) => void
 	newWishTitle: string
 	setNewWishTitle: (text: string) => void
+	addNewWish: (oS: OsTypeForSelect) => void
 	removeWish: (id: string) => void
 }
 
