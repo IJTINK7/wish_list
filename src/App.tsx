@@ -13,8 +13,8 @@ export type WishesDataPropsType = {
 }
 
 function App() {
+	const [activityFilter, setActivityFilter] = useState<StatusTypeForSelect>("All")
 	const [osFilter, setOsFilter] = useState<OsType>("All")
-	const [statusFilter, setStatusFilter] = useState<StatusTypeForSelect>("All")
 	const [newWishTitle, setNewWishTitle] = useState<string>("")
 	const [wishes, setWishes] = useState<WishesDataPropsType[]>([
 		{id: v1(), title: 'Samsung Galaxy S23', OS: "Android", checked: true},
@@ -31,23 +31,41 @@ function App() {
 		setWishes(wishes.filter(el => el.id !== id))
 	}
 
+	//{id: v1(), title: 'Samsung Galaxy S23', OS: "Android", checked: true, isTrue: statusValue }
+	//1. Видишь объект-делай копию. 2. Видишь массив-делай копию. 3. Видишь ключ-создавай новый.
 
-	const wishesWhatWeWantToSee = (osFilter === "All" ? wishes : wishes.filter(el => el.OS === osFilter))
+	const changeWishStatus = (wishId: string, statusValue: boolean) => {
+		setWishes(wishes.map((el)=> el.id === wishId ? {...el, checked: statusValue} :el))
+	}
 
-	const wishesWhatWeWantToSeeFiltered = (statusFilter === "All" ? wishesWhatWeWantToSee : statusFilter === "Completed" ? wishesWhatWeWantToSee.filter(el => el.checked) : wishesWhatWeWantToSee.filter(el => !el.checked));
+
+
+
+	const wishesWhatWeWantToSee = (osFilter === "All" ? wishes : wishes.filter(el => el.OS === osFilter)) // select OS
+
+
+	const wishesWhatWeWantToSeeGeneral = activityFilter === "All" ?
+		wishesWhatWeWantToSee : activityFilter === "Active" ?
+		wishesWhatWeWantToSee.filter(el=> !el.checked )
+		: wishesWhatWeWantToSee.filter(el=> el.checked )
+	// select Activity
+
 
 
 	return (
 		<div className="App">
-			<WishList wishes={wishesWhatWeWantToSeeFiltered}
+			<WishList wishes={wishesWhatWeWantToSeeGeneral}
 					  addNewWish={addNewWish}
 					  osFilter={osFilter}
 					  setOsFilter={setOsFilter}
 					  newWishTitle={newWishTitle}
 					  setNewWishTitle={setNewWishTitle}
 					  removeWish={removeWish}
-					  statusFilter={statusFilter}
-					  setStatusFilter={setStatusFilter}
+					  activityFilter={activityFilter}
+					  setActivityFilter={setActivityFilter}
+					  changeWishStatus={changeWishStatus}
+
+
 			/>
 		</div>
 	);
