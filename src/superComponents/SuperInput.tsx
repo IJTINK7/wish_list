@@ -1,4 +1,5 @@
 import React, {ChangeEvent, KeyboardEvent, useState} from 'react';
+import {SuperButton} from "./SuperButton";
 
 type SuperInputPropsType = {
     callBack: (newValue: string) => void
@@ -38,7 +39,7 @@ export const SuperInput: React.FC<SuperInputPropsType> = (
 
         <div>
             <input value={newValue} onChange={onChangeHandler} onKeyDown={onKeyDownHandler}/>
-            <button onClick={onClickHandler}>+</button>
+            <SuperButton callBack={onClickHandler} name={"Add"}/>
         </div>
 
 
