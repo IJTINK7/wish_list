@@ -1,5 +1,6 @@
 import React, {ChangeEvent, KeyboardEvent, useState} from 'react';
 import {OsType, WishesDataPropsType} from "./App";
+import {SuperInput} from "./SuperInput";
 
 export type OsTypeForSelect = "Android" | "iOS" | "Select OS"
 export type StatusTypeForSelect = "All" | "Active" | "Completed"
@@ -65,6 +66,7 @@ export const WishList = (props: WishListPropsType) => {
 			<h1>Phones</h1>
 			<div style={{display: "flex", justifyContent: "space-between"}}>
 				<div>
+					{/*<SuperInput callBack={} value={}/>*/}
 					<input placeholder={"Enter an item"}
 						   value={props.newWishTitle}
 						   onChange={onNewItemChangeHandler}
