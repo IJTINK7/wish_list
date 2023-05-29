@@ -1,6 +1,8 @@
-import React, {ChangeEvent, KeyboardEvent, useState} from 'react';
+import React, {useState} from 'react';
 import {OsType, WishesDataPropsType} from "./App";
 import {SuperInput} from "./superComponents/SuperInput";
+import SuperCheckbox from "./superComponents/SuperCheckbox";
+import {SuperSelect} from "./superComponents/SuperSelect";
 
 export type OsTypeForSelect = "Android" | "iOS" | "Select OS"
 export type StatusTypeForSelect = "All" | "Active" | "Completed"
@@ -38,21 +40,24 @@ export const WishList = (props: WishListPropsType) => {
 	const removeWishHandler = (id: string) => {
 		props.removeWish(id)
 	}
-	const onChangeOSHandler = (e: ChangeEvent<HTMLSelectElement>) => {
-		setOS(e.currentTarget.value as OsTypeForSelect)
+
+
+
+	const onChangeOSHandler = (value: string) => {
+		setOS(value as OsTypeForSelect)
 		setError(null)
 	}
-	const onChangeFilterOSHandler = (e: ChangeEvent<HTMLSelectElement>) => {
-		props.setOsFilter(e.currentTarget.value as OsType)
+	const onChangeFilterOSHandler = (value: string) => {
+		props.setOsFilter(value as OsType)
 	}
-	const onChangeActivityFilterHandler = (e: ChangeEvent<HTMLSelectElement>) => {
+	const onChangeActivityFilterHandler = (value: string) => {
 
-		props.setActivityFilter(e.currentTarget.value as StatusTypeForSelect)
+		props.setActivityFilter(value as StatusTypeForSelect)
 
 	}
 
-	const changeStatusHandler = (wishId: string , e: ChangeEvent<HTMLInputElement>) => {
-			props.changeWishStatus( wishId,e.currentTarget.checked)
+	const changeStatusHandler = (wishId: string , value: boolean) => {
+			props.changeWishStatus( wishId, value)
 	}
 
 	return (
@@ -71,11 +76,12 @@ export const WishList = (props: WishListPropsType) => {
 
 				</div>
 				<div>
-					<select value={oS} onChange={onChangeOSHandler}>
-						<option value={"Select OS"}>Select OS</option>
-						<option value={"Android"}>Android</option>
-						<option value={"iOS"}>iOS</option>
-					</select>
+					{/*<select value={oS} onChange={onChangeOSHandler}>*/}
+					{/*	<option value={"Select OS"}>Select OS</option>*/}
+					{/*	<option value={"Android"}>Android</option>*/}
+					{/*	<option value={"iOS"}>iOS</option>*/}
+					{/*</select>*/}
+					<SuperSelect options = {[{value: 'Select OS', label: "Select OS"}, {value: 'Android', label: "Android"}, {value: 'iOS', label: "iOS"}]}  callBack={onChangeOSHandler} />
 					{ error === "Select OS" ?  <div>{error}</div> : "" }
 				</div>
 				<div>
@@ -86,7 +92,9 @@ export const WishList = (props: WishListPropsType) => {
 				{props.wishes.map(el => {
 					return (
 						<li key={el.id}>
-							<input type="checkbox" checked={el.checked} onChange={(event)=>changeStatusHandler(el.id, event)}/>
+
+	{/*<input type="checkbox" checked={el.checked} onChange={(event)=>changeStatusHandler(el.id, event)}/>*/}
+	<SuperCheckbox checked={el.checked} callBack={(value)=>{changeStatusHandler(el.id, value)}}		 />
 							<span> {el.title} </span>
 							<span> / OS: </span>
 							<span> {el.OS} </span>
@@ -98,23 +106,23 @@ export const WishList = (props: WishListPropsType) => {
 			<div style={{display: "flex", justifyContent: "space-between"}}>
 				<div style={{marginRight: "20px"}}>
 					FILTER BY OS:
-					<div>
-						<select value={props.osFilter} onChange={onChangeFilterOSHandler}>
-							<option value={"All"}>All</option>
-							<option value={"Android"}>Android</option>
-							<option value={"iOS"}>iOS</option>
-						</select>
-					</div>
+					{/*<div>*/}
+					{/*	<select value={props.osFilter} onChange={onChangeFilterOSHandler}>*/}
+					{/*		<option value={"All"}>All</option>*/}
+					{/*		<option value={"Android"}>Android</option>*/}
+					{/*		<option value={"iOS"}>iOS</option>*/}
+					{/*	</select>*/}
+					{/*</div>*/}
+					<SuperSelect options = {[{value: 'All', label: "All"}, {value: 'Android', label: "Android"}, {value: 'iOS', label: "iOS"}]} callBack={onChangeFilterOSHandler} />
 				</div>
 				<div>
 					FILTER BY ACTIVITY:
+
 					<div>
-						<select value={props.activityFilter} onChange={onChangeActivityFilterHandler}>
-							<option value={"All"}>All</option>
-							<option value={"Active"}>Active</option>
-							<option value={"Completed"}>Completed</option>
-						</select>
+						<SuperSelect options = {[{value: 'All', label: "All"}, {value: 'Active', label: "Active"}, {value: 'Completed', label: "Completed"}]} callBack={onChangeActivityFilterHandler}/>
 					</div>
+
+
 				</div>
 			</div>
 		</div>
