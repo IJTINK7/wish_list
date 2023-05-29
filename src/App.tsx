@@ -15,7 +15,6 @@ export type WishesDataPropsType = {
 function App() {
 	const [activityFilter, setActivityFilter] = useState<StatusTypeForSelect>("All")
 	const [osFilter, setOsFilter] = useState<OsType>("All")
-	const [newWishTitle, setNewWishTitle] = useState<string>("")
 	const [wishes, setWishes] = useState<WishesDataPropsType[]>([
 		{id: v1(), title: 'Samsung Galaxy S23', OS: "Android", checked: true},
 		{id: v1(), title: 'IPhone 13 ProMax', OS: "iOS", checked: true},
@@ -24,8 +23,8 @@ function App() {
 		{id: v1(), title: 'Iphone 14', OS: "iOS", checked: false},
 	])
 
-	const addNewWish = (oS: OsTypeForSelect) => {
-		setWishes([{id: v1(), title: newWishTitle, OS: oS, checked: false}, ...wishes])
+	const addNewWish = (oS: OsTypeForSelect, newValue: string) => {
+		setWishes([{id: v1(), title: newValue, OS: oS, checked: false}, ...wishes])
 	}
 	const removeWish = (id: string) => {
 		setWishes(wishes.filter(el => el.id !== id))
@@ -58,8 +57,6 @@ function App() {
 					  addNewWish={addNewWish}
 					  osFilter={osFilter}
 					  setOsFilter={setOsFilter}
-					  newWishTitle={newWishTitle}
-					  setNewWishTitle={setNewWishTitle}
 					  removeWish={removeWish}
 					  activityFilter={activityFilter}
 					  setActivityFilter={setActivityFilter}
