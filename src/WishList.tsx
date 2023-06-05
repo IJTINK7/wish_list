@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {OsType, WishesDataPropsType} from "./App";
+import {OsType, WishesDataType, WishType} from "./App";
 import {SuperInput} from "./superComponents/SuperInput";
 import SuperCheckbox from "./superComponents/SuperCheckbox";
 import {SuperSelect} from "./superComponents/SuperSelect";
@@ -8,14 +8,16 @@ export type OsTypeForSelect = "Android" | "iOS" | "Select OS"
 export type StatusTypeForSelect = "All" | "Active" | "Completed"
 
 export type WishListPropsType = {
-	wishes: WishesDataPropsType[]
+	wishes:WishesDataType
 	osFilter: OsType
 	setOsFilter: (text: OsType) => void
-	addNewWish: (oS: OsTypeForSelect, newValue: string) => void
-	removeWish: (id: string) => void
+	addNewWish: (wishlistID: string, oS: OsTypeForSelect, newValue: string) => void
+	removeWish: (wishlistID: string, id: string) => void
 	activityFilter : StatusTypeForSelect
 	setActivityFilter: (filterValue: StatusTypeForSelect) => void
-	changeWishStatus: (wishId: string, statusValue: boolean) => void
+	changeWishStatus: (wishlistId: string, wishId: string, statusValue: boolean) => void
+	wishlistID: string
+	category: string
 }
 
 export const WishList = (props: WishListPropsType) => {
@@ -29,7 +31,7 @@ export const WishList = (props: WishListPropsType) => {
 	const addWishHandler = (newValue: string) => {
 		if (oS !== "Select OS") {
 			if (newValue.trim() !== ""){
-				props.addNewWish(oS, newValue)
+				props.addNewWish(props.wishlistID, oS, newValue)
 
 				setOS("Select OS")
 
@@ -37,8 +39,12 @@ export const WishList = (props: WishListPropsType) => {
 		} else setError("Select OS")
 	}
 
+
+
+
+
 	const removeWishHandler = (id: string) => {
-		props.removeWish(id)
+		props.removeWish(props.wishlistID ,id)
 	}
 
 
@@ -57,12 +63,12 @@ export const WishList = (props: WishListPropsType) => {
 	}
 
 	const changeStatusHandler = (wishId: string , value: boolean) => {
-			props.changeWishStatus( wishId, value)
+			props.changeWishStatus( props.wishlistID, wishId, value)
 	}
 
 	return (
 		<div>
-			<h1>Phones</h1>
+			<h1>{props.category}</h1>
 			<div style={{display: "flex", justifyContent: "space-between"}}>
 				<div>
 					<SuperInput callBack={addWishHandler}  setError={setError}/>
@@ -89,9 +95,9 @@ export const WishList = (props: WishListPropsType) => {
 				</div>
 			</div>
 			<ul>
-				{props.wishes.map(el => {
+				{props.wishes[props.wishlistID].map((el: WishType, index: number) => {
 					return (
-						<li key={el.id}>
+						<li key={index}>
 
 	{/*<input type="checkbox" checked={el.checked} onChange={(event)=>changeStatusHandler(el.id, event)}/>*/}
 	<SuperCheckbox checked={el.checked} callBack={(value)=>{changeStatusHandler(el.id, value)}}		 />
