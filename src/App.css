@@ -1,6 +1,7 @@
 .App {
     padding: 30px;
     display: flex;
+
 }
 
 .App > div {
@@ -19,3 +20,4 @@
     opacity: 0.5;
     text-decoration: line-through;
 }
+

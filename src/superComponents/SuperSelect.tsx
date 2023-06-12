@@ -6,7 +6,7 @@ type OptionType = {
 }
 
 type SuperSelectPropsType = {
-
+    value: string
     options: OptionType[]
     callBack: (value: string) => void
 }
@@ -15,6 +15,7 @@ export const SuperSelect: React.FC<SuperSelectPropsType> = (
     {
         options,
         callBack,
+        value,
         ...restProps
     }
 ) => {
@@ -23,7 +24,7 @@ export const SuperSelect: React.FC<SuperSelectPropsType> = (
             callBack(e.currentTarget.value)
     }
     return (
-        <select onChange={onChangeHandler}>
+        <select value={value}  onChange={onChangeHandler}>
             {options.map((el, index)=><option key={index} value={el.value}>{el.label}</option>)}
         </select>
     );
