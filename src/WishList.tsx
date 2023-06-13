@@ -3,21 +3,24 @@ import {OsType, WishesDataType, WishType} from "./App";
 import {SuperForm} from "./superComponents/SuperForm";
 import SuperCheckbox from "./superComponents/SuperCheckbox";
 import {SuperSelect} from "./superComponents/SuperSelect";
+import {v1} from "uuid";
+import {EditableSpan} from "./superComponents/Editable";
 
 export type FilterTypeForSelect = "usual" | "important" | "Select"
 export type StatusTypeForSelect = "All" | "Active" | "Completed"
 
 export type WishListPropsType = {
 	wishes:WishType[]
-	osFilter: OsType
+	valueOfImportantFilter: OsType
 	setOsFilter: (text: OsType) => void
 	addNewWish: (wishlistID: string, oS: FilterTypeForSelect, newValue: string) => void
 	removeWish: (wishlistID: string, id: string) => void
-	activityFilter : StatusTypeForSelect
-	setActivityFilter: (filterValue: StatusTypeForSelect) => void
+	activityFilter: OsType
 	changeWishStatus: (wishlistId: string, wishId: string, statusValue: boolean) => void
 	wishlistID: string
 	category: string
+	changeFilterValue: (wishlistID: string, filterValue: OsType, filterId: string) => void
+	changeWishListTitle: (wishlistID: string, newTitle: string) => void
 
 }
 
@@ -54,24 +57,28 @@ export const WishList = (props: WishListPropsType) => {
 		setOS(value as FilterTypeForSelect)
 		setError(null)
 	}
-	const onChangeFilterOSHandler = (value: string) => {
-		props.setOsFilter(value as OsType)
+	const onChangeFilterImportantHandler = (value: string) => {
+		const filterId = "filterByImportant"
+		props.changeFilterValue(props.wishlistID, value as OsType, filterId)
 	}
 	const onChangeActivityFilterHandler = (value: string) => {
-
-		props.setActivityFilter(value as StatusTypeForSelect)
+		const filterId = "filterByActivity"
+		props.changeFilterValue(props.wishlistID, value as OsType, filterId)
 
 	}
 
 	const changeStatusHandler = (wishId: string , value: boolean) => {
 			props.changeWishStatus( props.wishlistID, wishId, value)
 	}
+	const changeWishListTitleHandler = (newTitle: string) => {
+		props.changeWishListTitle(props.wishlistID, newTitle)
+	}
 
 
 	return (
 		<div>
-
-			<h1>{props.category}</h1>
+		<EditableSpan callBack={changeWishListTitleHandler} value={props.category} />
+			{/*<h1>{props.category}</h1>*/}
 			<div style={{display: "flex", justifyContent: "space-between"}}>
 				<div>
 					<SuperForm callBack={addWishHandler} setError={setError}/>
@@ -123,7 +130,7 @@ export const WishList = (props: WishListPropsType) => {
 					{/*		<option value={"important"}>important</option>*/}
 					{/*	</select>*/}
 					{/*</div>*/}
-					<SuperSelect value={props.osFilter} options = {[{value: 'All', label: "All"}, {value: 'usual', label: "usual"}, {value: 'important', label: "important"}]} callBack={onChangeFilterOSHandler} />
+					<SuperSelect value={props.valueOfImportantFilter} options = {[{value: 'All', label: "All"}, {value: 'usual', label: "usual"}, {value: 'important', label: "important"}]} callBack={onChangeFilterImportantHandler} />
 				</div>
 				<div>
 					FILTER BY ACTIVITY:

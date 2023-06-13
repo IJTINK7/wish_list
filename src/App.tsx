@@ -5,10 +5,10 @@ import {v1} from "uuid";
 import {SuperInput} from "./superComponents/SuperInput";
 import {SuperButton} from "./superComponents/SuperButton";
 
-export type OsType = "All" | 'important' | "usual" | FilterTypeForSelect
+export type OsType = "All" | 'important' | "usual" | FilterTypeForSelect | StatusTypeForSelect
 
 export type WishlistType = {
-    id: string, category: string, filterByActivity: string, filterByStatus: string
+    id: string, category: string, filterByActivity: OsType, filterByStatus: OsType
 }
 
 export type WishType = { id: string, title: string, status: string, checked: boolean }
@@ -50,7 +50,6 @@ function App() {
 
         })
 
-
     const [activityFilter, setActivityFilter] = useState<StatusTypeForSelect>("All")
     const [osFilter, setOsFilter] = useState<OsType>("All")
 
@@ -91,7 +90,7 @@ function App() {
         const newWishListId = v1()
         const newWishlist =
         {
-            id: newWishListId, category: wishlistTitle, filterByActivity: "All", filterByStatus: "All"
+            id: newWishListId, category: wishlistTitle, filterByActivity: "All" as OsType, filterByStatus: "All" as OsType
         }
 
 
@@ -102,14 +101,23 @@ function App() {
     }
 
 
+    const changeFilterValue = (wishlistID: string, filterValue: OsType, filterId: string) => {
 
+        if (filterId=== "filterByImportant") {
+            setWishlists(wishLists.map(el => el.id === wishlistID ? {...el, filterByStatus: filterValue} : el))
 
+        }
+        else {
+            setWishlists(wishLists.map(el => el.id === wishlistID ? {...el, filterByActivity: filterValue} : el))
 
+        }
+    }
 
+    const changeWishListTitle = (wishlistID: string, newTitle: string) => {
+        setWishlists(wishLists.map(el=> el.id === wishlistID ? {...el, category: newTitle}: el))
+    }
 
     return (
-
-
 
         <div className="App">
             <div>
@@ -125,19 +133,27 @@ function App() {
 
             {wishLists.map((wl) => {
 
+                const wishesWhatWeWantToSee = wl.filterByStatus === 'All' ? wishes[wl.id] : wishes[wl.id].filter(el=> el.status === wl.filterByStatus )
+
+    const wishesWhatWeWantToSeeGeneral = wl.filterByActivity === 'All' ? wishesWhatWeWantToSee :
+        wishesWhatWeWantToSee.filter(el=> wl.filterByActivity === 'Active' ? !el.checked : el.checked)
+
+
+
 
                 return <WishList
                     key={wl.id}
                     wishlistID={wl.id}
-                    wishes={wishes[wl.id]}
+                    changeWishListTitle={changeWishListTitle}
+                    wishes={wishesWhatWeWantToSeeGeneral}
                     addNewWish={addNewWish}
-                    osFilter={osFilter}
+                    activityFilter={wl.filterByActivity}
+                    valueOfImportantFilter={wl.filterByStatus}
                     setOsFilter={setOsFilter}
                     removeWish={removeWish}
-                    activityFilter={activityFilter}
-                    setActivityFilter={setActivityFilter}
                     changeWishStatus={changeWishStatus}
                     category={wl.category}
+                    changeFilterValue={changeFilterValue}
 
                 />
             })}
