@@ -12,8 +12,8 @@ type AddTodolistActionType={
 }
 type ChangeTodolistTitleActionType={
 	type: 'CHANGE-TODOLIST-TITLE'
-	id: string
-	title: string
+	wishlistID: string
+	newWishListTitle: string
 }
 type ChangeTodolistFilterActionType={
 	type: 'CHANGE-TODOLIST-FILTER'
@@ -31,7 +31,8 @@ export const wishListsReducer = (state: WishlistType[], action: ActionsType): Wi
 		// case 'ADD-TODOLIST':
 		// 	return [...state,{id: v1(), title: action.title, filter: 'all'}]
 		case 'CHANGE-TODOLIST-TITLE':
-			return state.map(el=>el.id === action.id ? {...el, title: action.title}: el )
+
+			return state.map(el=>el.id === action.wishlistID ? {...el, category: action.newWishListTitle}: el )
 		case 'CHANGE-TODOLIST-FILTER':
 			return state.map(el=>el.id === action.id ? {...el, filter: action.filter}: el )
 		default:
@@ -48,8 +49,8 @@ export const RemoveTodolistAC = (wishlistID: string): RemoveTodolistActionType  
 export const AddTodolistAC = (newTodolistTitle: string): AddTodolistActionType => {
 	return {type: 'ADD-TODOLIST', title: newTodolistTitle}
 }
-export const ChangeTodolistTitleAC = (todolistID: string, newTodolistTitle: string): ChangeTodolistTitleActionType => {
-	return {type: 'CHANGE-TODOLIST-TITLE', id: todolistID, title: newTodolistTitle}
+export const ChangeTodolistTitleAC = (wishlistID: string, newWishListTitle: string): ChangeTodolistTitleActionType => {
+	return {type: 'CHANGE-TODOLIST-TITLE', wishlistID, newWishListTitle}
 }
 // export const ChangeTodolistFilterAC = (todolistID: string, newFilter: FilterValuesType): ChangeTodolistFilterActionType => {
 // 	return {type: 'CHANGE-TODOLIST-FILTER', id: todolistID, filter: newFilter}

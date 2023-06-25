@@ -4,7 +4,7 @@ import {FilterTypeForSelect, StatusTypeForSelect, WishList} from "./WishList";
 import {v1} from "uuid";
 import {SuperInput} from "./superComponents/SuperInput";
 import {SuperButton} from "./superComponents/SuperButton";
-import {RemoveTodolistAC, wishListsReducer} from "./state/wishLists-reducer";
+import {ChangeTodolistTitleAC, RemoveTodolistAC, wishListsReducer} from "./state/wishLists-reducer";
 
 export type OsType = "All" | 'important' | "usual" | FilterTypeForSelect | StatusTypeForSelect
 
@@ -32,8 +32,8 @@ function App() {
 	const removeWishList = (wishlistID: string) => {
 		dispatch(RemoveTodolistAC(wishlistID))
 	}
-	const changeWishListTitle = (wishlistID: string, newTitle: string) => {
-		setWishlists(wishLists.map(el => el.id === wishlistID ? {...el, category: newTitle} : el))
+	const changeWishListTitle = (wishlistID: string, newWishListTitle: string) => {
+		dispatch(ChangeTodolistTitleAC(wishlistID, newWishListTitle))
 	}
 	const addNewWishList = () => {
 		const newWishListId = v1()
