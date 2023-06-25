@@ -5,6 +5,7 @@ import SuperCheckbox from "./superComponents/SuperCheckbox";
 import {SuperSelect} from "./superComponents/SuperSelect";
 import {v1} from "uuid";
 import {EditableSpan} from "./superComponents/Editable";
+import {SuperButton} from "./superComponents/SuperButton";
 
 export type FilterTypeForSelect = "usual" | "important" | "Select"
 export type StatusTypeForSelect = "All" | "Active" | "Completed"
@@ -21,7 +22,7 @@ export type WishListPropsType = {
 	category: string
 	changeFilterValue: (wishlistID: string, filterValue: OsType, filterId: string) => void
 	changeWishListTitle: (wishlistID: string, newTitle: string) => void
-
+	removeWishList:(wishlistID: string) => void
 }
 
 export const WishList = (props: WishListPropsType) => {
@@ -73,11 +74,15 @@ export const WishList = (props: WishListPropsType) => {
 	const changeWishListTitleHandler = (newTitle: string) => {
 		props.changeWishListTitle(props.wishlistID, newTitle)
 	}
+	const removeWishListHandler = () => {
+		props.removeWishList(props.wishlistID)
+	}
 
 
 	return (
 		<div>
 		<EditableSpan callBack={changeWishListTitleHandler} value={props.category} />
+			<SuperButton callBack={removeWishListHandler} name={"X"}/>
 			{/*<h1>{props.category}</h1>*/}
 			<div style={{display: "flex", justifyContent: "space-between"}}>
 				<div>
