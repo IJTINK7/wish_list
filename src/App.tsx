@@ -5,36 +5,31 @@ import {v1} from "uuid";
 import {SuperInput} from "./superComponents/SuperInput";
 import {SuperButton} from "./superComponents/SuperButton";
 import {
-	AddTodolistAC,
-	ChangeTodolistFilterAC,
-	ChangeTodolistTitleAC,
-	RemoveTodolistAC,
+	AddWishlistAC,ChangeWishlistFilterAC,
+	ChangeWishlistTitleAC,RemoveWishlistAC,
 	wishListsReducer
 } from "./state/wishLists-reducer";
 import {addNewTaskAC, wishesReducer} from "./state/wishes-reducer";
-
 export type OsType = "All" | 'important' | "usual" | FilterTypeForSelect | StatusTypeForSelect
-
 export type WishlistType = {
 	id: string, category: string, filterByActivity: OsType, filterByStatus: OsType
 }
-
 export type WishType = { id: string, title: string, status: string, checked: boolean }
-
 export type WishesDataType = {
 	[key: string]: WishType[]
 }
-
-
 function App() {
 	const [wishlistTitle, setWishlistTitle] = useState<string>("")
 	const wishlistID1 = v1();
 	const wishlistID2 = v1()
+
+	const [wishLists, dispatchWishList] = useReducer(wishListsReducer, [
+			{id: wishlistID1, category: "phones", filterByActivity: 'All', filterByStatus: 'All'},
+			{id: wishlistID2, category: "books", filterByActivity: 'All', filterByStatus: 'All'}
+		]
+	)
 	const removeWishList = (wishlistID: string) => {
-		dispatchWishList(RemoveTodolistAC(wishlistID))
-	}
-	const changeWishListTitle = (wishlistID: string, newWishListTitle: string) => {
-		dispatchWishList(ChangeTodolistTitleAC(wishlistID, newWishListTitle))
+		dispatchWishList(RemoveWishlistAC(wishlistID))
 	}
 	const addNewWishList = () => {
 		const newWishListId = v1()
@@ -44,17 +39,14 @@ function App() {
 			filterByActivity: "All" as OsType,
 			filterByStatus: "All" as OsType
 		}
-		dispatchWishList(AddTodolistAC(newWishListId,newWishlist))
+		dispatchWishList(AddWishlistAC(newWishListId,newWishlist))
 		dispatchWishes(addNewTaskAC(newWishListId))
 	}
-
-	const [wishLists, dispatchWishList] = useReducer(wishListsReducer, [
-			{id: wishlistID1, category: "phones", filterByActivity: 'All', filterByStatus: 'All'},
-			{id: wishlistID2, category: "books", filterByActivity: 'All', filterByStatus: 'All'}
-		]
-	)
+	const changeWishListTitle = (wishlistID: string, newWishListTitle: string) => {
+		dispatchWishList(ChangeWishlistTitleAC(wishlistID, newWishListTitle))
+	}
 	const changeFilterValue = (wishlistID: string, filterId: string, filterValue: OsType ) => {
-		dispatchWishList(ChangeTodolistFilterAC(wishlistID, filterId, filterValue))
+		dispatchWishList(ChangeWishlistFilterAC(wishlistID, filterId, filterValue))
 	}
 
 	const [wishes, dispatchWishes] = useReducer(wishesReducer,{

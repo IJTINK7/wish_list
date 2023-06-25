@@ -1,14 +1,12 @@
 import {
-	AddTodolistAC,
-	ChangeTodolistFilterAC,
-	ChangeTodolistTitleAC,
-	RemoveTodolistAC,
+	AddWishlistAC, ChangeWishlistFilterAC, ChangeWishlistTitleAC,
+	RemoveWishlistAC,
 	wishListsReducer
 } from './wishLists-reducer'
 import { v1 } from 'uuid'
-import {WishlistType} from "../App";
+import {OsType, WishlistType} from "../App";
 
-test('correct todolist should be removed', () => {
+test('correct wishlist should be removed', () => {
 	let wishlistID1 = v1()
 	let wishlistID2 = v1()
 
@@ -17,56 +15,112 @@ test('correct todolist should be removed', () => {
 		{id: wishlistID2, category: "books", filterByActivity: 'All', filterByStatus: 'All'}
 	]
 
-	const endState = wishListsReducer(startState, RemoveTodolistAC(wishlistID1))
+	const endState = wishListsReducer(startState, RemoveWishlistAC(wishlistID1))
 
 	expect(endState.length).toBe(1)
 	expect(endState[0].id).toBe(wishlistID2)
 })
-test('correct todolist should be added', () => {
+
+test('correct wishlist should be added', () => {
 	let wishlistID1 = v1()
 	let wishlistID2 = v1()
 
-	let newTodolistTitle = 'New Todolist'
+
+	let newWishlistTitle = 'New Todolist'
+
+	const newWishListId = v1()
+
+	const newWishlist ={
+		id: newWishListId,
+		category: newWishlistTitle,
+		filterByActivity: "All" as OsType,
+		filterByStatus: "All" as OsType
+	}
 
 	const startState: WishlistType[] = [
 		{id: wishlistID1, category: "phones", filterByActivity: 'All', filterByStatus: 'All'},
 		{id: wishlistID2, category: "books", filterByActivity: 'All', filterByStatus: 'All'}
 	]
 
-	// const endState = wishListsReducer(startState, AddTodolistAC(newTodolistTitle))
-	//
-	// expect(endState.length).toBe(3)
-	// expect(endState[2].category).toBe(newTodolistTitle)
+	const endState = wishListsReducer(startState, AddWishlistAC(newWishListId, newWishlist))
+
+	expect(endState.length).toBe(3)
+	expect(endState[2].category).toBe(newWishlistTitle)
+	expect(endState[2].id).toBe(newWishListId)
 })
-test('correct todolist should change its name', () => {
+test('correct wishlist should change its name', () => {
 	let wishlistID1 = v1()
 	let wishlistID2 = v1()
 
-	let newTodolistTitle = 'New Todolist'
+	let newWishListTitle = 'New Todolist'
 
 	const startState: WishlistType[] = [
 		{id: wishlistID1, category: "phones", filterByActivity: 'All', filterByStatus: 'All'},
 		{id: wishlistID2, category: "books", filterByActivity: 'All', filterByStatus: 'All'}
 	]
 
-	const endState = wishListsReducer(startState, ChangeTodolistTitleAC(wishlistID2, newTodolistTitle))
+	const endState = wishListsReducer(startState, ChangeWishlistTitleAC(wishlistID2, newWishListTitle))
 
-	expect(endState[0].category).toBe('What to learn')
-	expect(endState[1].category).toBe(newTodolistTitle)
+	expect(endState[0].category).toBe('phones')
+	expect(endState[1].category).toBe(newWishListTitle)
 })
-// test('correct filter of todolist should be changed', () => {
-// 	let todolistId1 = v1()
-// 	let todolistId2 = v1()
+test('correct filter of wishlist should be changed', () => {
+	let wishlistID1 = v1()
+	let wishlistID2 = v1()
+
+	let newFilter: OsType = 'important'
+	let filterId = "filterByImportant"
+
+	const startState: WishlistType[] = [
+		{id: wishlistID1, category: "phones", filterByActivity: 'All', filterByStatus: 'All'},
+		{id: wishlistID2, category: "books", filterByActivity: 'All', filterByStatus: 'All'}
+	]
+
+	const endState = wishListsReducer(startState, ChangeWishlistFilterAC(wishlistID2, filterId, newFilter))
+
+	expect(endState[0].filterByActivity).toBe('All')
+	expect(endState[0].filterByStatus).toBe('All')
+	expect(endState[1].filterByActivity).toBe('All')
+	expect(endState[1].filterByStatus).toBe('important')
+
+})
+
+// test('correct filter of wishlist should be changed', () => {
+// 	let wishlistID1 = v1()
+// 	let wishlistID2 = v1()
 //
-// 	let newFilter: FilterValuesType = 'completed'
+// 	let newFilter: OsType = 'Completed'
+// 	let filterId = "filterByActivity"
 //
-// 	const startState: Array<TodolistType> = [
-// 		{id: todolistId1, title: 'What to learn', filter: 'all'},
-// 		{id: todolistId2, title: 'What to buy', filter: 'all'}
+// 	const startState: WishlistType[] = [
+// 		{id: wishlistID1, category: "phones", filterByActivity: 'All', filterByStatus: 'All'},
+// 		{id: wishlistID2, category: "books", filterByActivity: 'All', filterByStatus: 'All'}
 // 	]
 //
-// 	const endState = todolistsReducer(startState, ChangeTodolistFilterAC(todolistId2, newFilter))
+// 	const endState = wishListsReducer(startState, ChangeWishlistFilterAC(wishlistID2, filterId, newFilter))
 //
-// 	expect(endState[0].filter).toBe('all')
-// 	expect(endState[1].filter).toBe(newFilter)
+// 	expect(endState[0].filterByActivity).toBe('All')
+// 	expect(endState[0].filterByStatus).toBe('All')
+// 	expect(endState[1].filterByActivity).toBe('Completed')
+// 	expect(endState[1].filterByStatus).toBe('All')
+// })
+
+// test('correct filter of wishlist should be changed', () => {
+// 	let wishlistID1 = v1()
+// 	let wishlistID2 = v1()
+//
+// 	let newFilter: OsType = "usual"
+// 	let filterId = "filterByImportant"
+//
+// 	const startState: WishlistType[] = [
+// 		{id: wishlistID1, category: "phones", filterByActivity: 'All', filterByStatus: 'All'},
+// 		{id: wishlistID2, category: "books", filterByActivity: 'All', filterByStatus: 'All'}
+// 	]
+//
+// 	const endState = wishListsReducer(startState, ChangeWishlistFilterAC(wishlistID1, filterId, newFilter))
+//
+// 	expect(endState[0].filterByActivity).toBe('All')
+// 	expect(endState[0].filterByStatus).toBe('usual')
+// 	expect(endState[1].filterByActivity).toBe('All')
+// 	expect(endState[1].filterByStatus).toBe('All')
 // })
