@@ -1,4 +1,5 @@
 import {WishlistType} from "../App";
+import {v1} from "uuid";
 
 type ActionsType = RemoveTodolistActionType | AddTodolistActionType | ChangeTodolistTitleActionType |ChangeTodolistFilterActionType
 
@@ -8,7 +9,8 @@ type RemoveTodolistActionType={
 }
 type AddTodolistActionType={
 	type: 'ADD-TODOLIST'
-	title: string
+	newWishListId:string
+	newWishlist: WishlistType
 }
 type ChangeTodolistTitleActionType={
 	type: 'CHANGE-TODOLIST-TITLE'
@@ -28,10 +30,9 @@ export const wishListsReducer = (state: WishlistType[], action: ActionsType): Wi
 	switch (action.type) {
 		case 'REMOVE-TODOLIST':
 			return state.filter(el=>el.id !== action.wishlistID)
-		// case 'ADD-TODOLIST':
-		// 	return [...state,{id: v1(), title: action.title, filter: 'all'}]
+		case 'ADD-TODOLIST':
+			return [...state, action.newWishlist]
 		case 'CHANGE-TODOLIST-TITLE':
-
 			return state.map(el=>el.id === action.wishlistID ? {...el, category: action.newWishListTitle}: el )
 		case 'CHANGE-TODOLIST-FILTER':
 			return state.map(el=>el.id === action.id ? {...el, filter: action.filter}: el )
@@ -46,12 +47,18 @@ export const RemoveTodolistAC = (wishlistID: string): RemoveTodolistActionType  
 		wishlistID
 	} as const
 }
-export const AddTodolistAC = (newTodolistTitle: string): AddTodolistActionType => {
-	return {type: 'ADD-TODOLIST', title: newTodolistTitle}
+export const AddTodolistAC = (newWishListId:string, newWishlist: WishlistType) => {
+	return {
+		type: 'ADD-TODOLIST',
+		newWishListId,
+		newWishlist
+	} as const
 }
+
+
 export const ChangeTodolistTitleAC = (wishlistID: string, newWishListTitle: string): ChangeTodolistTitleActionType => {
-	return {type: 'CHANGE-TODOLIST-TITLE', wishlistID, newWishListTitle}
+	return {type: 'CHANGE-TODOLIST-TITLE', wishlistID, newWishListTitle} as const
 }
 // export const ChangeTodolistFilterAC = (todolistID: string, newFilter: FilterValuesType): ChangeTodolistFilterActionType => {
-// 	return {type: 'CHANGE-TODOLIST-FILTER', id: todolistID, filter: newFilter}
+// 	return {type: 'CHANGE-TODOLIST-FILTER', id: todolistID, filter: newFilter} as const
 // }

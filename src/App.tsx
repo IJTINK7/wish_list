@@ -4,7 +4,8 @@ import {FilterTypeForSelect, StatusTypeForSelect, WishList} from "./WishList";
 import {v1} from "uuid";
 import {SuperInput} from "./superComponents/SuperInput";
 import {SuperButton} from "./superComponents/SuperButton";
-import {ChangeTodolistTitleAC, RemoveTodolistAC, wishListsReducer} from "./state/wishLists-reducer";
+import {AddTodolistAC, ChangeTodolistTitleAC, RemoveTodolistAC, wishListsReducer} from "./state/wishLists-reducer";
+import {addNewTaskAC, wishesReducer} from "./state/wishes-reducer";
 
 export type OsType = "All" | 'important' | "usual" | FilterTypeForSelect | StatusTypeForSelect
 
@@ -24,39 +25,38 @@ function App() {
 	const wishlistID1 = v1();
 	const wishlistID2 = v1()
 
-	const [wishLists, dispatch] = useReducer(wishListsReducer, [
+	const [wishLists, dispatchWishList] = useReducer(wishListsReducer, [
 			{id: wishlistID1, category: "phones", filterByActivity: 'All', filterByStatus: 'All'},
 			{id: wishlistID2, category: "books", filterByActivity: 'All', filterByStatus: 'All'}
 		]
 	)
 	const removeWishList = (wishlistID: string) => {
-		dispatch(RemoveTodolistAC(wishlistID))
+		dispatchWishList(RemoveTodolistAC(wishlistID))
 	}
 	const changeWishListTitle = (wishlistID: string, newWishListTitle: string) => {
-		dispatch(ChangeTodolistTitleAC(wishlistID, newWishListTitle))
+		dispatchWishList(ChangeTodolistTitleAC(wishlistID, newWishListTitle))
 	}
 	const addNewWishList = () => {
 		const newWishListId = v1()
-		const newWishlist =
-			{
+		const newWishlist ={
 				id: newWishListId,
 				category: wishlistTitle,
 				filterByActivity: "All" as OsType,
 				filterByStatus: "All" as OsType
 			}
-		setWishlists([newWishlist, ...wishLists])
-		setWishes({...wishes, [newWishListId]: []})
+		dispatchWishList(AddTodolistAC(newWishListId,newWishlist))
+		dispatchWishes(addNewTaskAC(newWishListId))
 	}
 
-	const changeFilterValue = (wishlistID: string, filterValue: OsType, filterId: string) => {
-		if (filterId === "filterByImportant") {
-			setWishlists(wishLists.map(el => el.id === wishlistID ? {...el, filterByStatus: filterValue} : el))
-		} else {
-			setWishlists(wishLists.map(el => el.id === wishlistID ? {...el, filterByActivity: filterValue} : el))
-		}
-	}
+	// const changeFilterValue = (wishlistID: string, filterValue: OsType, filterId: string) => {
+	// 	if (filterId === "filterByImportant") {
+	// 		setWishlists(wishLists.map(el => el.id === wishlistID ? {...el, filterByStatus: filterValue} : el))
+	// 	} else {
+	// 		setWishlists(wishLists.map(el => el.id === wishlistID ? {...el, filterByActivity: filterValue} : el))
+	// 	}
+	// }
 
-	const [wishes, setWishes] = useState<WishesDataType>({
+	const [wishes, dispatchWishes] = useReducer(wishesReducer,{
 			[wishlistID1]: [
 				{id: v1(), title: 'Samsung Galaxy S23', status: "usual", checked: true},
 				{id: v1(), title: 'IPhone 13 ProMax', status: 'important', checked: true},
@@ -77,17 +77,17 @@ function App() {
 	const [osFilter, setOsFilter] = useState<OsType>("All")
 
 	const addNewWish = (wishlistId: string, oS: FilterTypeForSelect, newValue: string) => {
-		let newItem = {id: v1(), title: newValue, status: oS, checked: false}
-		setWishes({...wishes, [wishlistId]: [newItem, ...wishes[wishlistId]]})
+		// let newItem = {id: v1(), title: newValue, status: oS, checked: false}
+		// setWishes({...wishes, [wishlistId]: [newItem, ...wishes[wishlistId]]})
 	}
 	const removeWish = (wishlistID: string, id: string) => {
-		setWishes({...wishes, [wishlistID]: wishes[wishlistID].filter(el => el.id !== id)})
+		// setWishes({...wishes, [wishlistID]: wishes[wishlistID].filter(el => el.id !== id)})
 	}
 	const changeWishStatus = (wishlistID: string, wishId: string, statusValue: boolean) => {
-		setWishes({
-			...wishes,
-			[wishlistID]: wishes[wishlistID].map(el => el.id === wishId ? {...el, checked: statusValue} : el)
-		})
+		// setWishes({
+		// 	...wishes,
+		// 	[wishlistID]: wishes[wishlistID].map(el => el.id === wishId ? {...el, checked: statusValue} : el)
+		// })
 		// setWishes(wishes.map((el)=> el.id === wishId ? {...el, checked: statusValue} :el))
 	}
 
