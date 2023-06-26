@@ -99,8 +99,9 @@ function App() {
 
 
     }
-    const removeWishList = (wishlistID: string) => {
-        setWishlists(wishLists.filter(el=>el.id !== wishlistID))
+
+    const removeWishList = (wishListId: string) => {
+        setWishlists(wishLists.filter(el=> el.id !== wishListId))
     }
 
 

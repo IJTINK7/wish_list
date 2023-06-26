@@ -23,6 +23,7 @@ export type WishListPropsType = {
 	changeFilterValue: (wishlistID: string, filterValue: OsType, filterId: string) => void
 	changeWishListTitle: (wishlistID: string, newTitle: string) => void
 	removeWishList: (wishlistID: string) => void
+
 }
 
 export const WishList = (props: WishListPropsType) => {
@@ -79,11 +80,13 @@ export const WishList = (props: WishListPropsType) => {
 		props.removeWishList(props.wishlistID)
 	}
 
+
 	return (
 		<div>
 		<EditableSpan callBack={changeWishListTitleHandler} value={props.category} />
-			<SuperButton callBack={removeWishListHandler} name={"X"}/>
 			{/*<h1>{props.category}</h1>*/}
+
+			<SuperButton callBack={removeWishListHandler} name={"X"} />
 			<div style={{display: "flex", justifyContent: "space-between"}}>
 				<div>
 					<SuperForm callBack={addWishHandler} setError={setError}/>
