@@ -19,7 +19,6 @@ export const wishListReducer = (state: WishlistType[], action: MainType): Wishli
 
 export type MainType = AddWishListACType
 export type AddWishListACType = ReturnType<typeof addWishListAC>
-
 export const addWishListAC = (title: string) => {
         return {
             type: 'ADD-WISHLIST',

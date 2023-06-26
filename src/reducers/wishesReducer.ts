@@ -1,4 +1,4 @@
-import {WishesDataType} from "../App";
+import {WishesDataType, WishlistType} from "../App";
 import {AddWishListACType} from "./wishListReducer";
 
 
