@@ -1,127 +1,82 @@
 import {
-    AddWishlistAC, ChangeWishlistFilterAC, ChangeWishlistTitleAC,
-    RemoveWishlistAC,
-    wishListsReducer
-} from './wishListsReducer'
-import { v1 } from 'uuid'
-import {OsType, WishlistType} from "../App";
+	addWishListAC,
+	changeWishListFilterAC,
+	changeWishListTitleAC,
+	removeWishListAC,
+	wishListReducer
+} from "./wishListReducer";
+import {WishlistType} from "../App";
 
-test('correct wishlist should be removed', () => {
-    let wishlistID1 = v1()
-    let wishlistID2 = v1()
+test('should add new wishlist correctly', () => {
+		const startState: WishlistType[] = [
+			{id: 'wishlistID1', category: "phones", filterByActivity: 'All', filterByStatus: 'All'},
+			{id: 'wishlistID2', category: "books", filterByActivity: 'All', filterByStatus: 'All'}
+		]
+		const action = addWishListAC('newTitle')
+		const endState = wishListReducer(startState, action)
+		expect(endState.length).toBe(3)
+		expect(endState.every(t => t.id !== '2')).toBeTruthy() // my
+		expect(endState).toHaveLength(3) // Rafkhat
+		expect(startState).toHaveLength(2)
+		expect(endState[2].id).toBeDefined();
+		expect(endState[2].category).toBe('newTitle'); //
+		expect(endState[2].filterByActivity).toBe('All');
+		expect(endState[2].filterByStatus).toBe('All');
+		expect(endState[2].category).toBe('newTitle') // Romanych + Diana
+		expect(endState[2]).toBeDefined() // Michael
+	})
 
-    const startState: WishlistType[] = [
-        {id: wishlistID1, category: "phones", filterByActivity: 'All', filterByStatus: 'All'},
-        {id: wishlistID2, category: "books", filterByActivity: 'All', filterByStatus: 'All'}
-    ]
-
-    const endState = wishListsReducer(startState, RemoveWishlistAC(wishlistID1))
-
-    expect(endState.length).toBe(1)
-    expect(endState[0].id).toBe(wishlistID2)
-    expect(endState.every(t => t.id != '2')).toBeTruthy();
-
+test('should remove wishlist correctly', () => {
+	const startState: WishlistType[] = [
+		{id: 'wishlistID1', category: "phones", filterByActivity: 'All', filterByStatus: 'All'},
+		{id: 'wishlistID2', category: "books", filterByActivity: 'All', filterByStatus: 'All'}
+	]
+	const action = removeWishListAC('wishlistID1')
+	const endState = wishListReducer(startState, action)
+	expect(endState.every(t => t.id !== '2')).toBeTruthy(); // my
+	expect(endState.length).toBe(1) // Roma + Zhenya
+	expect(endState.length).toBe(1)  // Michael
+	expect(endState[0].category).toBe('books')
+	expect(endState[0].id).toBe('wishlistID2') // Diana
+	expect(startState).toHaveLength(2) // Rafkhat
+	expect(endState).toHaveLength(1)
+	expect(endState[0].id).toBeDefined();
+	expect(endState[0].category).toBe('books'); //
+	expect(endState[0].filterByActivity).toBe('All');
+	expect(endState[0].filterByStatus).toBe('All');
 })
 
-test('correct wishlist should be added', () => {
-    let wishlistID1 = v1()
-    let wishlistID2 = v1()
-
-
-    let newWishlistTitle = 'New Todolist'
-
-    const newWishListId = v1()
-
-    const newWishlist ={
-        id: newWishListId,
-        category: newWishlistTitle,
-        filterByActivity: "All" as OsType,
-        filterByStatus: "All" as OsType
-    }
-
-    const startState: WishlistType[] = [
-        {id: wishlistID1, category: "phones", filterByActivity: 'All', filterByStatus: 'All'},
-        {id: wishlistID2, category: "books", filterByActivity: 'All', filterByStatus: 'All'}
-    ]
-
-    const endState = wishListsReducer(startState, AddWishlistAC('Title'))
-
-    expect(endState.length).toBe(3)
-    expect(endState[2].category).toBe('Title')
-
-})
-test('correct wishlist should change its name', () => {
-    let wishlistID1 = v1()
-    let wishlistID2 = v1()
-
-    let newWishListTitle = 'New Todolist'
-
-    const startState: WishlistType[] = [
-        {id: wishlistID1, category: "phones", filterByActivity: 'All', filterByStatus: 'All'},
-        {id: wishlistID2, category: "books", filterByActivity: 'All', filterByStatus: 'All'}
-    ]
-
-    const endState = wishListsReducer(startState, ChangeWishlistTitleAC(wishlistID2, newWishListTitle))
-
-    expect(endState[0].category).toBe('phones')
-    expect(endState[1].category).toBe(newWishListTitle)
-})
-test('correct filter of wishlist should be changed', () => {
-    let wishlistID1 = v1()
-    let wishlistID2 = v1()
-
-    let newFilter: OsType = 'important'
-    let filterId = "filterByImportant"
-
-    const startState: WishlistType[] = [
-        {id: wishlistID1, category: "phones", filterByActivity: 'All', filterByStatus: 'All'},
-        {id: wishlistID2, category: "books", filterByActivity: 'All', filterByStatus: 'All'}
-    ]
-
-    const endState = wishListsReducer(startState, ChangeWishlistFilterAC(wishlistID2, filterId, newFilter))
-
-    expect(endState[0].filterByActivity).toBe('All')
-    expect(endState[0].filterByStatus).toBe('All')
-    expect(endState[1].filterByActivity).toBe('All')
-    expect(endState[1].filterByStatus).toBe('important')
-
+test('please change wishlists title', () => {
+	const startState: WishlistType[] = [
+		{id: 'wishlistID1', category: "phones", filterByActivity: 'All', filterByStatus: 'All'},
+		{id: 'wishlistID2', category: "books", filterByActivity: 'All', filterByStatus: 'All'}
+	]
+	const action = changeWishListTitleAC('wishlistID1', 'NewTitle')
+	const endState = wishListReducer(startState, action)
+	expect(endState[0].category).toBe('NewTitle');
+	expect(endState[1].category).toBe('books');
+	expect(endState.length).toBe(2);
+	expect(startState).toHaveLength(2)
+	expect(endState).toHaveLength(2)
+	expect(endState[0].id).toBeDefined();
+	expect(endState[0].category).toBe('NewTitle');
+	expect(endState[0].filterByActivity).toBe('All');
+	expect(endState[0].filterByStatus).toBe('All');
+	expect(endState[1].id).toBe('wishlistID2');
+	expect(endState[1].category).toBe('books');
+	expect(endState[1].filterByActivity).toBe('All');
+	expect(endState[1].filterByStatus).toBe('All');
 })
 
-// test('correct filter of wishlist should be changed', () => {
-//   let wishlistID1 = v1()
-//   let wishlistID2 = v1()
-//
-//   let newFilter: OsType = 'Completed'
-//   let filterId = "filterByActivity"
-//
-//   const startState: WishlistType[] = [
-//     {id: wishlistID1, category: "phones", filterByActivity: 'All', filterByStatus: 'All'},
-//     {id: wishlistID2, category: "books", filterByActivity: 'All', filterByStatus: 'All'}
-//   ]
-//
-//   const endState = wishListsReducer(startState, ChangeWishlistFilterAC(wishlistID2, filterId, newFilter))
-//
-//   expect(endState[0].filterByActivity).toBe('All')
-//   expect(endState[0].filterByStatus).toBe('All')
-//   expect(endState[1].filterByActivity).toBe('Completed')
-//   expect(endState[1].filterByStatus).toBe('All')
-// })//
-// test('correct filter of wishlist should be changed', () => {
-// //   let wishlistID1 = v1()
-// //   let wishlistID2 = v1()
-// //
-// //   let newFilter: OsType = "usual"
-// //   let filterId = "filterByImportant"
-// //
-// //   const startState: WishlistType[] = [
-// //     {id: wishlistID1, category: "phones", filterByActivity: 'All', filterByStatus: 'All'},
-// //     {id: wishlistID2, category: "books", filterByActivity: 'All', filterByStatus: 'All'}
-// //   ]
-// //
-// //   const endState = wishListsReducer(startState, ChangeWishlistFilterAC(wishlistID1, filterId, newFilter))
-// //
-// //   expect(endState[0].filterByActivity).toBe('All')
-// //   expect(endState[0].filterByStatus).toBe('usual')
-// //   expect(endState[1].filterByActivity).toBe('All')
-// //   expect(endState[1].filterByStatus).toBe('All')
-// // })
+test('please change wishlists filter', () => {
+	const startState: WishlistType[] = [
+		{id: 'wishlistID1', category: "phones", filterByActivity: 'All', filterByStatus: 'All'},
+		{id: 'wishlistID2', category: "books", filterByActivity: 'All', filterByStatus: 'All'}
+	]
+	const action = changeWishListFilterAC('wishlistID1', "filterByImportant", 'important')
+	const endState = wishListReducer(startState, action)
+	expect(endState[0].filterByActivity).toBe('All');
+	expect(endState[0].filterByStatus).toBe('important');
+	expect(endState[1].filterByActivity).toBe('All');
+	expect(endState[1].filterByStatus).toBe('All');
+})

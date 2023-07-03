@@ -8,7 +8,6 @@ import {SuperButton} from "./superComponents/SuperButton";
 
 export type FilterTypeForSelect = "usual" | "important" | "Select"
 export type StatusTypeForSelect = "All" | "Active" | "Completed"
-
 export type WishListPropsType = {
 	wishes: WishType[]
 	valueOfImportantFilter: OsType
@@ -19,20 +18,20 @@ export type WishListPropsType = {
 	changeWishStatus: (wishlistId: string, wishId: string, statusValue: boolean) => void
 	wishlistID: string
 	category: string
-	changeFilterValue: (wishlistID: string, filterId: string, filterValue: OsType,) => void
+	changeFilterValue: (wishlistID: string, filterValue: OsType, filterId: string) => void
 	changeWishListTitle: (wishlistID: string, newTitle: string) => void
 	removeWishList: (wishlistID: string) => void
 }
-
 export const WishList = (props: WishListPropsType) => {
 	const [error, setError] = useState<string | null>(null)
 	const [oS, setOS] = useState<FilterTypeForSelect>("Select")
-
 	const addWishHandler = (newValue: string) => {
 		if (oS !== "Select") {
 			if (newValue.trim() !== "") {
 				props.addNewWish(props.wishlistID, oS, newValue)
+
 				setOS("Select")
+
 			} else setError("Select item")
 		} else setError("Select")
 	}
@@ -45,11 +44,11 @@ export const WishList = (props: WishListPropsType) => {
 	}
 	const onChangeFilterImportantHandler = (value: string) => {
 		const filterId = "filterByImportant"
-		props.changeFilterValue(props.wishlistID, filterId, value as OsType)
+		props.changeFilterValue(props.wishlistID, value as OsType, filterId)
 	}
 	const onChangeActivityFilterHandler = (value: string) => {
 		const filterId = "filterByActivity"
-		props.changeFilterValue(props.wishlistID, filterId, value as OsType)
+		props.changeFilterValue(props.wishlistID, value as OsType, filterId)
 	}
 	const changeStatusHandler = (wishId: string, value: boolean) => {
 		props.changeWishStatus(props.wishlistID, wishId, value)
