@@ -12,6 +12,7 @@ import {
 	wishListReducer
 } from "./reducers/wishListReducer";
 import {addNewWishAC, changeWishStatusAC, removeWishAC, wishesReducer} from "./reducers/wishesReducer";
+
 export type OsType = "All" | 'important' | "usual" | FilterTypeForSelect | StatusTypeForSelect
 export type WishlistType = {
 	id: string, category: string, filterByActivity: OsType, filterByStatus: OsType
@@ -20,18 +21,19 @@ export type WishType = { id: string, title: string, status: string, checked: boo
 export type WishesDataType = {
 	[key: string]: WishType[]
 }
+
 function App() {
 	const [activityFilter, setActivityFilter] = useState<StatusTypeForSelect>("All")
 	const [osFilter, setOsFilter] = useState<OsType>("All")
 	const [wishlistTitle, setWishlistTitle] = useState<string>("")
 	const wishlistID1 = v1();
 	const wishlistID2 = v1()
-	const [wishLists, dispatchWishLists] = useReducer(wishListReducer,([
+	const [wishLists, dispatchWishLists] = useReducer(wishListReducer, ([
 			{id: wishlistID1, category: "phones", filterByActivity: 'All', filterByStatus: 'All'},
 			{id: wishlistID2, category: "books", filterByActivity: 'All', filterByStatus: 'All'}
 		]
 	))
-	const [wishes, dispatchWishes] = useReducer(wishesReducer,(
+	const [wishes, dispatchWishes] = useReducer(wishesReducer, (
 		{
 			[wishlistID1]: [
 				{id: v1(), title: 'Samsung Galaxy S23', status: "usual", checked: true},
@@ -103,4 +105,5 @@ function App() {
 		</div>
 	);
 }
+
 export default App;
