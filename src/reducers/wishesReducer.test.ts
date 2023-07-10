@@ -1,5 +1,5 @@
 import {v1} from "uuid";
-import {WishesDataType} from "../App";
+import {WishesDataType} from "../AppWithRedux";
 import {addNewWishAC, changeWishStatusAC, removeWishAC, wishesReducer} from "./wishesReducer";
 test('should add new wish', () => {
 		const startState:WishesDataType = {

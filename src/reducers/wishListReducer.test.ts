@@ -5,7 +5,7 @@ import {
 	removeWishListAC,
 	wishListReducer
 } from "./wishListReducer";
-import {WishlistType} from "../App";
+import {WishlistType} from "../AppWithRedux";
 
 test('should add new wishlist correctly', () => {
 		const startState: WishlistType[] = [

@@ -1,10 +1,15 @@
-import React, {useState} from 'react';
-import {OsType, WishType} from "./App";
+import React, {memo, useCallback, useState} from 'react';
+import {OsType, WishType} from "./AppWithRedux";
 import {SuperForm} from "./superComponents/SuperForm";
 import SuperCheckbox from "./superComponents/SuperCheckbox";
 import {SuperSelect} from "./superComponents/SuperSelect";
 import {EditableSpan} from "./superComponents/Editable";
 import {SuperButton} from "./superComponents/SuperButton";
+import {useDispatch, useSelector} from "react-redux";
+import {AppRootReducerType} from "./redux/store";
+import {WishesDataType, WishlistType} from "./AppWithRedux";
+import {addNewWishAC, changeWishStatusAC, removeWishAC} from "./reducers/wishesReducer";
+import {changeWishListFilterAC, changeWishListTitleAC, removeWishListAC} from "./reducers/wishListReducer";
 
 export type FilterTypeForSelect = "usual" | "important" | "Select"
 export type StatusTypeForSelect = "All" | "Active" | "Completed"
@@ -12,31 +17,36 @@ export type WishListPropsType = {
 	wishes: WishType[]
 	valueOfImportantFilter: OsType
 	setOsFilter: (text: OsType) => void
-	addNewWish: (wishlistID: string, oS: FilterTypeForSelect, newValue: string) => void
-	removeWish: (wishlistID: string, id: string) => void
 	activityFilter: OsType
-	changeWishStatus: (wishlistId: string, wishId: string, statusValue: boolean) => void
 	wishlistID: string
 	category: string
-	changeFilterValue: (wishlistID: string, filterValue: OsType, filterId: string) => void
-	changeWishListTitle: (wishlistID: string, newTitle: string) => void
-	removeWishList: (wishlistID: string) => void
 }
-export const WishList = (props: WishListPropsType) => {
+export const WishList = memo( (props: WishListPropsType) => {
+
+
+	const dispatch = useDispatch()
+	const wishLists = useSelector<AppRootReducerType, WishlistType[]>((store) => {
+		return store.wishLists
+	})
+	const wishes = useSelector<AppRootReducerType, WishesDataType>((store) => {
+		return store.wishes
+	})
+
+
 	const [error, setError] = useState<string | null>(null)
 	const [oS, setOS] = useState<FilterTypeForSelect>("Select")
-	const addWishHandler = (newValue: string) => {
+	const addWishHandler = useCallback( (newValue: string) => {
 		if (oS !== "Select") {
 			if (newValue.trim() !== "") {
-				props.addNewWish(props.wishlistID, oS, newValue)
+				dispatch(addNewWishAC(props.wishlistID, oS, newValue))
 
 				setOS("Select")
 
 			} else setError("Select item")
 		} else setError("Select")
-	}
+	}, [dispatch])
 	const removeWishHandler = (id: string) => {
-		props.removeWish(props.wishlistID, id)
+		dispatch(removeWishAC(props.wishlistID, id))
 	}
 	const onChangeOSHandler = (value: string) => {
 		setOS(value as FilterTypeForSelect)
@@ -44,20 +54,21 @@ export const WishList = (props: WishListPropsType) => {
 	}
 	const onChangeFilterImportantHandler = (value: string) => {
 		const filterId = "filterByImportant"
-		props.changeFilterValue(props.wishlistID, value as OsType, filterId)
+		dispatch(changeWishListFilterAC(props.wishlistID, value as OsType, filterId as OsType))
 	}
 	const onChangeActivityFilterHandler = (value: string) => {
 		const filterId = "filterByActivity"
-		props.changeFilterValue(props.wishlistID, value as OsType, filterId)
+		dispatch(changeWishListFilterAC(props.wishlistID, value as OsType, filterId as OsType))
+
 	}
 	const changeStatusHandler = (wishId: string, value: boolean) => {
-		props.changeWishStatus(props.wishlistID, wishId, value)
+		dispatch(changeWishStatusAC(props.wishlistID, wishId, value))
 	}
 	const changeWishListTitleHandler = (newTitle: string) => {
-		props.changeWishListTitle(props.wishlistID, newTitle)
+		dispatch(changeWishListTitleAC(props.wishlistID, newTitle))
 	}
 	const removeWishListHandler = () => {
-		props.removeWishList(props.wishlistID)
+		dispatch(removeWishListAC(props.wishlistID))
 	}
 	return (
 		<div>
@@ -111,4 +122,4 @@ export const WishList = (props: WishListPropsType) => {
 			</div>
 		</div>
 	);
-}
+})
