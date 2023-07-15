@@ -24,7 +24,7 @@ export const SuperSelect: React.FC<SuperSelectPropsType> = (
             callBack(e.currentTarget.value)
     }
     return (
-        <select value={value}  onChange={onChangeHandler}>
+        <select value={value}  onChange={onChangeHandler} className={"wishlist__cardFilterSelect"}>
             {options.map((el, index)=><option key={index} value={el.value}>{el.label}</option>)}
         </select>
     );

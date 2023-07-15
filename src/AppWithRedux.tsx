@@ -47,27 +47,29 @@ export function AppWithRedux() {
 
 
     return (
-        <div className="App">
+        <div className="App wishlist">
             <div>
                 <SuperInput callBack={setWishlistTitle} value={wishlistTitle} onKeyDownCallBack={() => {
                 }}/>
 
                 <SuperButton callBack={addNewWishList} name={"Add"}/>
             </div>
-            {wishLists.map((wl) => {
-                const wishesWhatWeWantToSee = wl.filterByStatus === 'All' ? wishes[wl.id] : wishes[wl.id].filter(el => el.status === wl.filterByStatus)
-                const wishesWhatWeWantToSeeGeneral = wl.filterByActivity === 'All' ? wishesWhatWeWantToSee :
-                    wishesWhatWeWantToSee.filter(el => wl.filterByActivity === 'Active' ? !el.checked : el.checked)
-                return <WishList
-                    key={wl.id}
-                    wishlistID={wl.id}
-                    wishes={wishesWhatWeWantToSeeGeneral}
-                    activityFilter={wl.filterByActivity}
-                    valueOfImportantFilter={wl.filterByStatus}
-                    setOsFilter={setOsFilter}
-                    category={wl.category}
-                />
-            })}
+            <div className="wishlist__cards">
+                {wishLists.map((wl) => {
+                    const wishesWhatWeWantToSee = wl.filterByStatus === 'All' ? wishes[wl.id] : wishes[wl.id].filter(el => el.status === wl.filterByStatus)
+                    const wishesWhatWeWantToSeeGeneral = wl.filterByActivity === 'All' ? wishesWhatWeWantToSee :
+                        wishesWhatWeWantToSee.filter(el => wl.filterByActivity === 'Active' ? !el.checked : el.checked)
+                    return <WishList
+                        key={wl.id}
+                        wishlistID={wl.id}
+                        wishes={wishesWhatWeWantToSeeGeneral}
+                        activityFilter={wl.filterByActivity}
+                        valueOfImportantFilter={wl.filterByStatus}
+                        setOsFilter={setOsFilter}
+                        category={wl.category}
+                    />
+                })}
+            </div>
         </div>
     );
 }

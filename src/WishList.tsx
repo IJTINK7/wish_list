@@ -21,7 +21,7 @@ export type WishListPropsType = {
 	wishlistID: string
 	category: string
 }
-export const WishList = memo( (props: WishListPropsType) => {
+export const WishList = memo((props: WishListPropsType) => {
 
 
 	const dispatch = useDispatch()
@@ -32,10 +32,9 @@ export const WishList = memo( (props: WishListPropsType) => {
 		return store.wishes
 	})
 
-
 	const [error, setError] = useState<string | null>(null)
 	const [oS, setOS] = useState<FilterTypeForSelect>("Select")
-	const addWishHandler = useCallback( (newValue: string) => {
+	const addWishHandler = useCallback((newValue: string) => {
 		if (oS !== "Select") {
 			if (newValue.trim() !== "") {
 				dispatch(addNewWishAC(props.wishlistID, oS, newValue))
@@ -59,7 +58,6 @@ export const WishList = memo( (props: WishListPropsType) => {
 	const onChangeActivityFilterHandler = (value: string) => {
 		const filterId = "filterByActivity"
 		dispatch(changeWishListFilterAC(props.wishlistID, value as OsType, filterId as OsType))
-
 	}
 	const changeStatusHandler = (wishId: string, value: boolean) => {
 		dispatch(changeWishStatusAC(props.wishlistID, wishId, value))
@@ -71,7 +69,7 @@ export const WishList = memo( (props: WishListPropsType) => {
 		dispatch(removeWishListAC(props.wishlistID))
 	}
 	return (
-		<div>
+		<div className={"wishlist__cardsItem"}>
 			<EditableSpan callBack={changeWishListTitleHandler} value={props.category}/>
 			<SuperButton callBack={removeWishListHandler} name={"X"}/>
 			<div style={{display: "flex", justifyContent: "space-between"}}>
@@ -87,37 +85,46 @@ export const WishList = memo( (props: WishListPropsType) => {
 					{error === "Select" ? <div>{error}</div> : ""}
 				</div>
 			</div>
-			<ul>
-				{props.wishes.map((el: WishType, index: number) => {
-					return (
-						<li key={index}>
-							<SuperCheckbox checked={el.checked} callBack={(value) => {
-								changeStatusHandler(el.id, value)
-							}}/>
-							<span> {el.title} </span>
-							<span> / status: </span>
-							<span> {el.status} </span>
-							<button onClick={() => removeWishHandler(el.id)}>X</button>
-						</li>
-					)
-				})}
-			</ul>
-			<div style={{display: "flex", justifyContent: "space-between"}}>
-				<div style={{marginRight: "20px"}}>
-					FILTER BY IMPORTANT:
+			<div className="main-container">
+				<div className="table-container">
+					<div className="table-row heading">
+						<div className="row-item checkbox"></div>
+						<div className="row-item title">Title</div>
+						<div className="row-item">Status</div>
+						<div className="row-item"></div>
+					</div>
+					{props.wishes.map((el: WishType, index: number) => {
+						return (
+							<div className="table-row" key={index}>
+								<div className="row-item checkbox">
+									<SuperCheckbox checked={el.checked} callBack={(value) => {
+										changeStatusHandler(el.id, value)
+									}}/>
+								</div>
+								<div className="row-item title"> {el.title} </div>
+								<div className="row-item"> {el.status} </div>
+								<div className="row-item">
+									<button onClick={() => removeWishHandler(el.id)}>X</button>
+								</div>
+							</div>
+						)
+					})}
+				</div>
+			</div>
+			<div className={"wishlist__cardFilters"}>
+				<div className={"wishlist__cardFilter1 wishlist__cardFilter"}>
+					<div className={"wishlist__cardTitle"}>FILTER BY IMPORTANT:</div>
 					<SuperSelect value={props.valueOfImportantFilter} options={[{value: 'All', label: "All"}, {
 						value: 'usual',
 						label: "usual"
 					}, {value: 'important', label: "important"}]} callBack={onChangeFilterImportantHandler}/>
 				</div>
-				<div>
-					FILTER BY ACTIVITY:
-					<div>
-						<SuperSelect value={props.activityFilter} options={[{value: 'All', label: "All"}, {
-							value: 'Active',
-							label: "Active"
-						}, {value: 'Completed', label: "Completed"}]} callBack={onChangeActivityFilterHandler}/>
-					</div>
+				<div className={"wishlist__cardFilter2 wishlist__cardFilter"}>
+					<div className={"wishlist__cardTitle"}>FILTER BY ACTIVITY:</div>
+					<SuperSelect value={props.activityFilter} options={[{value: 'All', label: "All"}, {
+						value: 'Active',
+						label: "Active"
+					}, {value: 'Completed', label: "Completed"}]} callBack={onChangeActivityFilterHandler}/>
 				</div>
 			</div>
 		</div>
