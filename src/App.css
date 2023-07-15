@@ -64,7 +64,7 @@
     margin: 0 auto;
     border-radius: 4px;
     border: 1px solid #DADADA;
-    box-shadow: 0px 1px 4px rgba(0, 0, 0, .08);
+    box-shadow: 0 1px 4px rgba(0, 0, 0, .08);
 }
 
 .table-row {
