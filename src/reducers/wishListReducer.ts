@@ -4,8 +4,8 @@ import {v1} from "uuid";
 export const wishlistID1 = v1();
 export const wishlistID2 = v1()
 const initialState: WishlistType[] = [
-	{id: wishlistID1, category: "phones", filterByActivity: 'All', filterByStatus: 'All', order: 0},
-	{id: wishlistID2, category: "books", filterByActivity: 'All', filterByStatus: 'All', order: 1}
+	{id: wishlistID1, category: "Phones", filterByActivity: 'All', filterByStatus: 'All', order: 0},
+	{id: wishlistID2, category: "Books", filterByActivity: 'All', filterByStatus: 'All', order: 1}
 ]
 export const wishListReducer = (state: WishlistType[] = initialState, action: MainType): WishlistType[] => {
 	switch (action.type) {
@@ -106,8 +106,8 @@ export const changeWishListFilterAC = (wishlistID: string, filterId: string, fil
 	} as const
 }
 
-export type ChangeWishListOrderACType = ReturnType<typeof ChangeWishListOrderAC>
-export const ChangeWishListOrderAC = (currentWishList: WishlistType, leaveWishList: WishlistType) => {
+export type ChangeWishListOrderACType = ReturnType<typeof changeWishListOrderAC>
+export const changeWishListOrderAC = (currentWishList: WishlistType, leaveWishList: WishlistType) => {
 	return {
 		type: 'CHANGE-WISHLIST-ORDER',
 		payload: {currentWishList, leaveWishList}

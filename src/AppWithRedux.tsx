@@ -4,17 +4,11 @@ import {FilterTypeForSelect, StatusTypeForSelect, WishList} from "./WishList";
 
 import {SuperInput} from "./superComponents/SuperInput";
 import {SuperButton} from "./superComponents/SuperButton";
-import {
-	addWishListAC,
-	changeWishListFilterAC, ChangeWishListOrderAC,
-	changeWishListTitleAC,
-	removeWishListAC,
-	wishListReducer
-} from "./reducers/wishListReducer";
+import {addWishListAC,changeWishListOrderAC} from "./reducers/wishListReducer";
 import {useDispatch, useSelector} from "react-redux";
 import {AppRootReducerType} from "./redux/store";
 
-export type OsType = "All" | 'important' | "usual" | FilterTypeForSelect | StatusTypeForSelect
+export type OsType = "All" | 'Important' | "Usual" | FilterTypeForSelect | StatusTypeForSelect
 export type WishlistType = {
 	id: string, category: string, filterByActivity: OsType, filterByStatus: OsType, order: number
 }
@@ -23,7 +17,6 @@ export type WishesDataType = {
 	[key: string]: WishType[]
 }
 export function AppWithRedux() {
-	const [osFilter, setOsFilter] = useState<OsType>("All")
 	const [wishlistTitle, setWishlistTitle] = useState<string>("")
 	const dispatch = useDispatch()
 	const wishLists = useSelector<AppRootReducerType, WishlistType[]>((store) => {
@@ -45,15 +38,15 @@ export function AppWithRedux() {
 		setCurrentWishList(wishLists.find(el => el.id === wl.id) as WishlistType)
 	}
 	const onDragEnd = (e: DragEvent<HTMLDivElement>) => {
-		e.currentTarget.style.background = '#0099ff'
+		e.currentTarget.style.background = "#FFFFFF"
 	}
 	const onDragLeave = (e: DragEvent<HTMLDivElement>) => {
-		e.currentTarget.style.background = '#0099ff'
+		e.currentTarget.style.background = "#FFFFFF"
 	}
 	const onDropHandler = (e: DragEvent<HTMLDivElement>, wl: WishlistType) => {
 		e.preventDefault()
 		const leaveWishlist = wishLists.find(el => el.id === wl.id) as WishlistType
-		dispatch(ChangeWishListOrderAC(currentWishList as WishlistType, leaveWishlist))
+		dispatch(changeWishListOrderAC(currentWishList as WishlistType, leaveWishlist))
 	}
     return (
 		<div className="App wishlist">
@@ -84,7 +77,6 @@ export function AppWithRedux() {
 						wishes={wishesWhatWeWantToSeeGeneral}
 						activityFilter={wl.filterByActivity}
 						valueOfImportantFilter={wl.filterByStatus}
-						setOsFilter={setOsFilter}
 						category={wl.category}
 					    />
                     </div>

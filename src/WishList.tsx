@@ -15,12 +15,12 @@ import {
 	removeWishListAC
 } from "./reducers/wishListReducer";
 
-export type FilterTypeForSelect = "usual" | "important" | "Select"
+
+export type FilterTypeForSelect = "Usual" | "Important" | "Select"
 export type StatusTypeForSelect = "All" | "Active" | "Completed"
 export type WishListPropsType = {
 	wishes: WishType[]
 	valueOfImportantFilter: OsType
-	setOsFilter: (text: OsType) => void
 	activityFilter: OsType
 	wishlistID: string
 	category: string
@@ -73,28 +73,28 @@ export const WishList = memo((props: WishListPropsType) => {
 	return (
 		<div className={"wishlist__cardsItem"}>
 			<div className="wishlist__title-container">
-				<EditableSpan callBack={changeWishListTitleHandler} value={props.category} />
-				<SuperButton callBack={removeWishListHandler} name={"X"}/>
+					<EditableSpan callBack={changeWishListTitleHandler} value={props.category}/>
+					<SuperButton callBack={removeWishListHandler} name={"X"}/>
 			</div>
 			<div className="input-container">
 				<div>
 					<SuperForm callBack={addWishHandler} setError={setError}/>
-					{error === "Type wish name" ? <div>{error}</div> : ""}
+					{error === "Type wish name" ? <div className="error-message">{error}</div> : ""}
 				</div>
 				<div>
 					<SuperSelect value={oS} options={[{value: 'Select', label: "Select"}, {
-						value: 'usual',
-						label: "usual"
-					}, {value: 'important', label: "important"}]} callBack={onChangeOSHandler}/>
-					{error === "Select wish status" ? <div>{error}</div> : ""}
+						value: 'Usual',
+						label: "Usual"
+					}, {value: 'Important', label: "Important"}]} callBack={onChangeOSHandler}/>
+					{error === "Select wish status" ? <div className="error-message">{error}</div> : ""}
 				</div>
 			</div>
 			<div className="main-container">
 				<div className="table-container">
 					<div className="table-row heading">
 						<div className="row-item checkbox"></div>
-						<div className="row-item title">Title</div>
-						<div className="row-item">Status</div>
+						<div className="row-item heading-title">Title</div>
+						<div className="row-item heading-status">Status</div>
 						<div className="row-item"></div>
 					</div>
 					{props.wishes.map((el: WishType, index: number) => {
@@ -108,7 +108,7 @@ export const WishList = memo((props: WishListPropsType) => {
 								<div className="row-item title">
 									<EditableSpan callBack={(newTitle)=>changeWishTitleHandler(el.id, newTitle)} value={el.title}/>
 								</div>
-								<div className="row-item"> {el.status} </div>
+								<div className="row-item status"> {el.status} </div>
 								<div className="row-item">
 									<button onClick={() => removeWishHandler(el.id)}>X</button>
 								</div>
@@ -121,14 +121,14 @@ export const WishList = memo((props: WishListPropsType) => {
 				<div className={"wishlist__cardFilter1 wishlist__cardFilter"}>
 					<div className={"wishlist__cardTitle"}>FILTER BY IMPORTANT:</div>
 					<SuperSelect value={props.valueOfImportantFilter} options={[{value: 'All', label: "All"}, {
-						value: 'usual',
-						label: "usual"
-					}, {value: 'important', label: "important"}]} callBack={onChangeFilterImportantHandler}/>
+						value: "Usual",
+						label: "Usual"
+					}, {value: 'Important', label: "Important"}]} callBack={onChangeFilterImportantHandler}/>
 				</div>
 				<div className={"wishlist__cardFilter2 wishlist__cardFilter"}>
 					<div className={"wishlist__cardTitle"}>FILTER BY ACTIVITY:</div>
 					<SuperSelect value={props.activityFilter} options={[{value: 'All', label: "All"}, {
-						value: 'Active',
+						value: "Active",
 						label: "Active"
 					}, {value: 'Completed', label: "Completed"}]} callBack={onChangeActivityFilterHandler}/>
 				</div>

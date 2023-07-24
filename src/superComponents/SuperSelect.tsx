@@ -1,16 +1,13 @@
 import React, {ChangeEvent} from 'react';
-
 type OptionType = {
     value: string
     label: string
 }
-
 type SuperSelectPropsType = {
     value: string
     options: OptionType[]
     callBack: (value: string) => void
 }
-
 export const SuperSelect: React.FC<SuperSelectPropsType> = (
     {
         options,
@@ -19,7 +16,6 @@ export const SuperSelect: React.FC<SuperSelectPropsType> = (
         ...restProps
     }
 ) => {
-
     const onChangeHandler = (e: ChangeEvent<HTMLSelectElement>) => {
             callBack(e.currentTarget.value)
     }

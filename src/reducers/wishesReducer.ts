@@ -5,18 +5,18 @@ import {v1} from "uuid";
 
 const initialState: WishesDataType = {
 	[wishlistID1]: [
-		{id: v1(), title: 'Samsung Galaxy S23', status: "usual", checked: true},
-		{id: v1(), title: 'IPhone 13 ProMax', status: 'important', checked: true},
-		{id: v1(), title: 'Xiaomi 13', status: "usual", checked: true},
-		{id: v1(), title: 'Huawei', status: "usual", checked: false},
-		{id: v1(), title: 'Iphone 14', status: 'important', checked: false}
+		{id: v1(), title: 'Samsung Galaxy S23', status: "Usual", checked: true},
+		{id: v1(), title: 'IPhone 13 ProMax', status: 'Important', checked: true},
+		{id: v1(), title: 'Xiaomi 13', status: "Usual", checked: true},
+		{id: v1(), title: 'Huawei', status: "Usual", checked: false},
+		{id: v1(), title: 'Iphone 14', status: 'Important', checked: false}
 	],
 	[wishlistID2]: [
-		{id: v1(), title: 'Hamlet ', status: "usual", checked: true},
-		{id: v1(), title: 'The Odyssey ', status: "important", checked: true},
-		{id: v1(), title: 'Sherlock Holmes', status: "usual", checked: true},
-		{id: v1(), title: 'Don Quixote', status: "important", checked: false},
-		{id: v1(), title: 'HeadFirst JS', status: "usual", checked: false}]
+		{id: v1(), title: 'Hamlet ', status: "Usual", checked: true},
+		{id: v1(), title: 'The Odyssey ', status: "Important", checked: true},
+		{id: v1(), title: 'Sherlock Holmes', status: "Usual", checked: true},
+		{id: v1(), title: 'Don Quixote', status: "Important", checked: false},
+		{id: v1(), title: 'HeadFirst JS', status: "Usual", checked: false}]
 }
 
 export const wishesReducer = (state: WishesDataType = initialState, action: WishesMainType): WishesDataType => {
