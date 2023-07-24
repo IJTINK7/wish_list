@@ -9,8 +9,8 @@ import {WishlistType} from "../AppWithRedux";
 
 test('should add new wishlist correctly', () => {
 		const startState: WishlistType[] = [
-			{id: 'wishlistID1', category: "phones", filterByActivity: 'All', filterByStatus: 'All'},
-			{id: 'wishlistID2', category: "books", filterByActivity: 'All', filterByStatus: 'All'}
+			{id: 'wishlistID1', category: "phones", filterByActivity: 'All', filterByStatus: 'All', order: 0},
+			{id: 'wishlistID2', category: "books", filterByActivity: 'All', filterByStatus: 'All', order: 1}
 		]
 		const action = addWishListAC('newTitle')
 		const endState = wishListReducer(startState, action)
@@ -28,8 +28,8 @@ test('should add new wishlist correctly', () => {
 
 test('should remove wishlist correctly', () => {
 	const startState: WishlistType[] = [
-		{id: 'wishlistID1', category: "phones", filterByActivity: 'All', filterByStatus: 'All'},
-		{id: 'wishlistID2', category: "books", filterByActivity: 'All', filterByStatus: 'All'}
+		{id: 'wishlistID1', category: "phones", filterByActivity: 'All', filterByStatus: 'All', order: 0},
+		{id: 'wishlistID2', category: "books", filterByActivity: 'All', filterByStatus: 'All', order: 1}
 	]
 	const action = removeWishListAC('wishlistID1')
 	const endState = wishListReducer(startState, action)
@@ -48,8 +48,8 @@ test('should remove wishlist correctly', () => {
 
 test('please change wishlists title', () => {
 	const startState: WishlistType[] = [
-		{id: 'wishlistID1', category: "phones", filterByActivity: 'All', filterByStatus: 'All'},
-		{id: 'wishlistID2', category: "books", filterByActivity: 'All', filterByStatus: 'All'}
+		{id: 'wishlistID1', category: "phones", filterByActivity: 'All', filterByStatus: 'All', order: 0},
+		{id: 'wishlistID2', category: "books", filterByActivity: 'All', filterByStatus: 'All', order: 1}
 	]
 	const action = changeWishListTitleAC('wishlistID1', 'NewTitle')
 	const endState = wishListReducer(startState, action)
@@ -70,8 +70,8 @@ test('please change wishlists title', () => {
 
 test('please change wishlists filter', () => {
 	const startState: WishlistType[] = [
-		{id: 'wishlistID1', category: "phones", filterByActivity: 'All', filterByStatus: 'All'},
-		{id: 'wishlistID2', category: "books", filterByActivity: 'All', filterByStatus: 'All'}
+		{id: 'wishlistID1', category: "phones", filterByActivity: 'All', filterByStatus: 'All', order: 0},
+		{id: 'wishlistID2', category: "books", filterByActivity: 'All', filterByStatus: 'All', order: 1}
 	]
 	const action = changeWishListFilterAC('wishlistID1', "filterByImportant", 'important')
 	const endState = wishListReducer(startState, action)

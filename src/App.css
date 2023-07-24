@@ -15,17 +15,21 @@
     opacity: 0.5;
     text-decoration: line-through;
 }
+
 .wishlist{
     display: flex;
     flex-direction: column;
     max-width: 1440px;
     margin: auto;
 }
+
 .wishlist__cards{
     display: flex;
     flex-wrap: wrap;
-    gap: 20px;
+    gap: 20px
 }
+
+
 .wishlist__cardsItem{
     padding: 30px;
     box-sizing: border-box;

@@ -1,4 +1,4 @@
-import React, {useCallback, useReducer, useState} from 'react';
+import React, {DragEvent, useCallback, useReducer, useState} from 'react';
 import './App.css';
 import {FilterTypeForSelect, StatusTypeForSelect, WishList} from "./WishList";
 import {v1} from "uuid";
@@ -6,7 +6,7 @@ import {SuperInput} from "./superComponents/SuperInput";
 import {SuperButton} from "./superComponents/SuperButton";
 import {
     addWishListAC,
-    changeWishListFilterAC,
+    changeWishListFilterAC, ChangeWishListOrderAC,
     changeWishListTitleAC,
     removeWishListAC,
     wishListReducer
@@ -17,7 +17,7 @@ import {AppRootReducerType} from "./redux/store";
 
 export type OsType = "All" | 'important' | "usual" | FilterTypeForSelect | StatusTypeForSelect
 export type WishlistType = {
-    id: string, category: string, filterByActivity: OsType, filterByStatus: OsType
+    id: string, category: string, filterByActivity: OsType, filterByStatus: OsType, order: number
 }
 export type WishType = { id: string, title: string, status: string, checked: boolean }
 export type WishesDataType = {
@@ -39,27 +39,90 @@ export function AppWithRedux() {
         return store.wishes
     })
 
-    const addNewWishList = useCallback( () => {
+    const addNewWishList = () => {
         const action = addWishListAC(wishlistTitle)
         dispatch(action)
+        setWishlistTitle("")
 
-    }, [dispatch])
+    }
+
+    const keyDownForAddWishlist = (key: string) => {
+        key === 'Enter' && addNewWishList()
+    }
+
+
+    const [currentWishList, setCurrentWishList] = useState<WishlistType | null>(null)
+
+
+    const onDragStartHandler = (e:DragEvent<HTMLDivElement>, wl: WishlistType) => {
+
+
+        setCurrentWishList(wishLists.find(el => el.id === wl.id) as WishlistType)
+
+    }
+    const onDragEnd = (e:DragEvent<HTMLDivElement>) => {
+        e.currentTarget.style.background = '#0099ff'
+
+    }
+    const onDragLeave = (e:DragEvent<HTMLDivElement>) => {
+        e.currentTarget.style.background = '#0099ff'
+
+    }
+
+    const onDropHandler = (e:DragEvent<HTMLDivElement>, wl: WishlistType) => {
+        e.preventDefault()
+        const leaveWishlist = wishLists.find(el => el.id === wl.id )as WishlistType
+
+        dispatch(ChangeWishListOrderAC(currentWishList as WishlistType, leaveWishlist))
+        console.log(e.currentTarget.id)
+
+
+    }
+
 
 
     return (
+
         <div className="App wishlist">
             <div>
-                <SuperInput callBack={setWishlistTitle} value={wishlistTitle} onKeyDownCallBack={() => {
+                <SuperInput callBack={setWishlistTitle} value={wishlistTitle} onKeyDownCallBack={(e) => {
+                    keyDownForAddWishlist(e)
                 }}/>
 
                 <SuperButton callBack={addNewWishList} name={"Add"}/>
             </div>
             <div className="wishlist__cards">
-                {wishLists.map((wl) => {
+                {wishLists.sort((a, b)=>a.order - b.order).map((wl) => {
                     const wishesWhatWeWantToSee = wl.filterByStatus === 'All' ? wishes[wl.id] : wishes[wl.id].filter(el => el.status === wl.filterByStatus)
                     const wishesWhatWeWantToSeeGeneral = wl.filterByActivity === 'All' ? wishesWhatWeWantToSee :
                         wishesWhatWeWantToSee.filter(el => wl.filterByActivity === 'Active' ? !el.checked : el.checked)
-                    return <WishList
+                    return <div
+                        onDragStart={(e)=> {
+                            onDragStartHandler(e, wl)
+
+                        }}
+                        onDragEnd={(e)=> {
+                            onDragEnd(e)
+                        }
+                        }
+                        onDragLeave={(e) => {
+                            onDragLeave(e)
+                        }
+                        }
+                        onDragOver={ (e) => {
+                            e.preventDefault()
+                            e.currentTarget.style.background = 'lightgrey'
+                        }
+                        }
+                        onDrop={(e)=> {
+                            onDropHandler(e, wl)
+
+                        }}
+
+                        draggable={true}
+                    ><WishList
+
+
                         key={wl.id}
                         wishlistID={wl.id}
                         wishes={wishesWhatWeWantToSeeGeneral}
@@ -67,7 +130,7 @@ export function AppWithRedux() {
                         valueOfImportantFilter={wl.filterByStatus}
                         setOsFilter={setOsFilter}
                         category={wl.category}
-                    />
+                    /></div>
                 })}
             </div>
         </div>

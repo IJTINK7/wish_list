@@ -11,13 +11,3 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
-
-ul{
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-input[type="checkbox"] {
-  margin: 0;
-}

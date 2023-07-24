@@ -6,18 +6,28 @@ export const wishlistID1 = v1();
 export const wishlistID2 = v1()
 
 const initialState: WishlistType[] = [
-    {id: wishlistID1, category: "phones", filterByActivity: 'All', filterByStatus: 'All'},
-    {id: wishlistID2, category: "books", filterByActivity: 'All', filterByStatus: 'All'}
+    {id: wishlistID1, category: "phones", filterByActivity: 'All', filterByStatus: 'All', order: 0},
+    {id: wishlistID2, category: "books", filterByActivity: 'All', filterByStatus: 'All', order: 1}
 ]
 
 export const wishListReducer = (state: WishlistType[]=initialState, action: MainType): WishlistType[] => {
         switch (action.type) {
             case 'ADD-WISHLIST': {
-                const newWishList: WishlistType = {id: action.payload.wishListId, category: action.payload.title, filterByActivity: 'All', filterByStatus: 'All'}
+
+                let count = state.length
+                const newWishList: WishlistType = {id: action.payload.wishListId, category: action.payload.title, filterByActivity: 'All', filterByStatus: 'All', order: count}
+                console.log(newWishList.order)
                 return [...state, newWishList]
             }
             case 'REMOVE-WISHLIST': {
-                return state.filter(el => el.id !== action.payload.wishListId)
+
+                const copyState = state.filter(el => el.id !== action.payload.wishListId)
+               return copyState.map((el, index) => {
+
+                   el.order = index
+                   console.log(el.order)
+                   return el
+               })
             }
             case 'CHANGE-WISHLIST-TITLE': {
                 return state.map(el=> el.id === action.payload.wishlistID ? {...el, category: action.payload.newTitle} : el)
@@ -29,11 +39,30 @@ export const wishListReducer = (state: WishlistType[]=initialState, action: Main
                     return state.map(el => el.id === action.payload.wishlistID ? {...el, filterByActivity: action.payload.filterValue} : el)
                 }
             }
+            case 'CHANGE-WISHLIST-ORDER': {
+                debugger
+               const startWishListOrder = action.payload.currentWishList.order
+               const leaveWishListOrder = action.payload.leaveWishList.order
+                console.log(startWishListOrder)
+                console.log(leaveWishListOrder)
+
+                return state.map(el => {
+                    if (el.id === action.payload.currentWishList.id) {
+                        return { ...el, order: leaveWishListOrder };
+                    } else if (el.id === action.payload.leaveWishList.id)
+
+                        return { ...el, order: startWishListOrder };
+
+
+                    else {
+                        return el;
+                    }
+                }) }
             default: return state
         }
 }
 
-export type MainType = AddWishListACType | RemoveWishListACType | ChangeWishListTitleACType | ChangeWishListFilterACType
+export type MainType = AddWishListACType | RemoveWishListACType | ChangeWishListTitleACType | ChangeWishListFilterACType | ChangeWishListOrderACType
 
 export type AddWishListACType = ReturnType<typeof addWishListAC>
 export const addWishListAC = (title: string) => {
@@ -68,6 +97,14 @@ export const changeWishListFilterAC = (wishlistID: string, filterId: string, fil
     return {
         type: 'CHANGE-WISHLIST-FILTER',
         payload: {wishlistID, filterId, filterValue}
+    } as const
+}
+
+export type ChangeWishListOrderACType = ReturnType<typeof ChangeWishListOrderAC>
+export const ChangeWishListOrderAC = (currentWishList: WishlistType, leaveWishList: WishlistType )=>{
+    return {
+        type: 'CHANGE-WISHLIST-ORDER',
+        payload: {currentWishList, leaveWishList}
     } as const
 }
 
