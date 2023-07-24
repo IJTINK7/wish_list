@@ -97,9 +97,9 @@ export const WishList = memo((props: WishListPropsType) => {
 						<div className="row-item heading-status">Status</div>
 						<div className="row-item"></div>
 					</div>
-					{props.wishes.map((el: WishType, index: number) => {
+					{props.wishes.map((el: WishType) => {
 						return (
-							<div className="table-row" key={index}>
+							<div className="table-row" key={el.id}>
 								<div className="row-item checkbox">
 									<SuperCheckbox checked={el.checked} callBack={(value) => {
 										changeStatusHandler(el.id, value)

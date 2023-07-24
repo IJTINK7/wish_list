@@ -61,6 +61,7 @@ export function AppWithRedux() {
 					const wishesWhatWeWantToSeeGeneral = wl.filterByActivity === 'All' ? wishesWhatWeWantToSee :
 						wishesWhatWeWantToSee.filter(el => wl.filterByActivity === 'Active' ? !el.checked : el.checked)
 					return <div
+						key={wl.id}
 						onDragStart={(e) => {onDragStartHandler(e, wl)}}
 						onDragEnd={(e) => {onDragEnd(e)}						}
 						onDragLeave={(e) => {onDragLeave(e)}}
