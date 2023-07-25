@@ -7,11 +7,7 @@ import {EditableSpan} from "./superComponents/Editable";
 import {SuperButton} from "./superComponents/SuperButton";
 import {useDispatch} from "react-redux";
 import {addNewWishAC, changeWishStatusAC, changeWishTitleAC, removeWishAC} from "./reducers/wishesReducer";
-import {
-	changeWishListFilterAC,
-	changeWishListTitleAC,
-	removeWishListAC
-} from "./reducers/wishListReducer";
+import {changeWishListFilterAC, changeWishListTitleAC, removeWishListAC} from "./reducers/wishListReducer";
 
 export type FilterTypeForSelect = "Usual" | "Important" | "Select"
 export type StatusTypeForSelect = "All" | "Active" | "Completed"
@@ -132,7 +128,6 @@ export const WishList = memo((props: WishListPropsType) => {
 						}, {value: 'Completed', label: "Completed"}]} callBack={onChangeActivityFilterHandler}/>
 					</div>
 				</div>
-
 			</div>
 		</div>)
 })

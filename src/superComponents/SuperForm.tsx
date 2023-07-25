@@ -5,9 +5,7 @@ type SuperInputPropsType = {
     callBack: (newValue: string) => void
     setError: (value: string | null) => void
 }
-export const SuperForm: React.FC<SuperInputPropsType> = (
-    {callBack,setError}
-) => {
+export const SuperForm: React.FC<SuperInputPropsType> = ({callBack,setError}) => {
     const [newValue, setNewValue] = useState<string>("")
     const onChangeHandler = (newValue: string) => {
         setNewValue(newValue)

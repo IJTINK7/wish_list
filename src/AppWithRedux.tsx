@@ -34,7 +34,6 @@ export function AppWithRedux() {
 	const keyDownForAddWishlist = (key: string) => {
 		key === 'Enter' && addNewWishList()
 	}
-
 	const onDragStartHandler = (e: DragEvent<HTMLDivElement>, wl: WishlistType) => {
 		setCurrentWishList(wishLists.find(el => el.id === wl.id) as WishlistType)
 	}
@@ -48,7 +47,6 @@ export function AppWithRedux() {
 		e.preventDefault()
 		e.currentTarget.style.backgroundColor = "#FFFFFF";
 	}
-
 	const onDropHandler = (e: DragEvent<HTMLDivElement>, wl: WishlistType) => {
 		e.preventDefault()
 		const leaveWishlist = wishLists.find(el => el.id === wl.id) as WishlistType
