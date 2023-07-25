@@ -2,6 +2,7 @@
     display: flex;
     margin: 0 auto;
 }
+
 .wishlist {
     display: flex;
     flex-direction: column;
@@ -9,16 +10,19 @@
     margin: auto;
     justify-content: center;
 }
-.wishlist__adding-form{
+
+.wishlist__adding-form {
     margin: 0 auto;
 }
-.wishlist__adding-form__title{
+
+.wishlist__adding-form__title {
     color: #0099FF;
     margin: 10px auto;
     font-size: 30px;
     font-weight: bold;
 }
-.wishlist__adding-form__input-with-button{
+
+.wishlist__adding-form__input-with-button {
     margin: 2em;
 }
 
@@ -41,28 +45,30 @@
     min-width: 380px;
     max-width: 435px;
 }
-.wishlist__title-container{
+
+.wishlist__title-container {
     display: flex;
     margin-bottom: 15px;
     color: #FFFFFF;
     font-weight: 700;
 }
 
-.wishlist__title-container__editable-span{
+.wishlist__title-container__editable-span {
     padding-right: 10px;
     font-size: 25px;
 }
-.wishlist__title-container__super-button{
+
+.wishlist__title-container__super-button {
     font-size: 22px;
     align-content: center;
 }
 
-.input-container{
+.input-container {
     display: flex;
     justify-content: space-between;
 }
 
-.error-message{
+.error-message {
     color: #FEFE00;
     font-weight: 500;
 }
@@ -95,6 +101,7 @@
     color: #00BFFF;
     font-weight: 500;
 }
+
 .row-item {
     display: flex;
     flex: 1;
@@ -104,6 +111,7 @@
     justify-content: center;
     transition: all 0.15s ease-in-out;
 }
+
 .row-item:hover {
     cursor: pointer;
     background-color: #FFFFFF;
@@ -119,6 +127,7 @@
     opacity: 0.5;
     text-decoration: line-through;
 }
+
 .row-sub-container {
     display: flex;
     flex-flow: column nowrap;
@@ -150,9 +159,11 @@
     flex-direction: column;
     gap: 8px;
 }
+
 .wishlist__card-filter-container {
     display: flex;
 }
+
 .wishlist__card-filter-title {
     min-width: 180px;
 }
