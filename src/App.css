@@ -1,11 +1,13 @@
 .App {
     display: flex;
+    margin: 0 auto;
 }
 .wishlist {
     display: flex;
     flex-direction: column;
     max-width: 1980px;
     margin: auto;
+    justify-content: center;
 }
 .wishlist__adding-form{
     margin: 0 auto;
@@ -37,6 +39,7 @@
     border-radius: 15px;
     color: #FFFFFF;
     min-width: 380px;
+    max-width: 435px;
 }
 .wishlist__title-container{
     display: flex;
