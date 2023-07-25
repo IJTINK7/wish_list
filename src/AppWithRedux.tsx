@@ -18,6 +18,7 @@ export type WishesDataType = {
 }
 export function AppWithRedux() {
 	const [wishlistTitle, setWishlistTitle] = useState<string>("")
+	const [currentWishList, setCurrentWishList] = useState<WishlistType | null>(null)
 	const dispatch = useDispatch()
 	const wishLists = useSelector<AppRootReducerType, WishlistType[]>((store) => {
 		return store.wishLists
@@ -33,16 +34,21 @@ export function AppWithRedux() {
 	const keyDownForAddWishlist = (key: string) => {
 		key === 'Enter' && addNewWishList()
 	}
-	const [currentWishList, setCurrentWishList] = useState<WishlistType | null>(null)
+
 	const onDragStartHandler = (e: DragEvent<HTMLDivElement>, wl: WishlistType) => {
 		setCurrentWishList(wishLists.find(el => el.id === wl.id) as WishlistType)
 	}
-	const onDragEnd = (e: DragEvent<HTMLDivElement>) => {
-		e.currentTarget.style.background = "#FFFFFF"
+	const onDragEndHandler = (e: DragEvent<HTMLDivElement>) => {
+		e.currentTarget.style.backgroundColor = "#FFFFFF";
 	}
-	const onDragLeave = (e: DragEvent<HTMLDivElement>) => {
-		e.currentTarget.style.background = "#FFFFFF"
+	const onDragLeaveHandler = (e: DragEvent<HTMLDivElement>) => {
+		e.currentTarget.style.backgroundColor = "#FFFFFF";
 	}
+	const onDragOverHandler = (e: DragEvent<HTMLDivElement>) => {
+		e.preventDefault()
+		e.currentTarget.style.backgroundColor = "#FFFFFF";
+	}
+
 	const onDropHandler = (e: DragEvent<HTMLDivElement>, wl: WishlistType) => {
 		e.preventDefault()
 		const leaveWishlist = wishLists.find(el => el.id === wl.id) as WishlistType
@@ -50,27 +56,29 @@ export function AppWithRedux() {
 	}
     return (
 		<div className="App wishlist">
-			<div>
-				<SuperInput callBack={setWishlistTitle} value={wishlistTitle}
-                            onKeyDownCallBack={(e) => {keyDownForAddWishlist(e)}}/>
-				<SuperButton callBack={addNewWishList} name={"Add"}/>
+			<div className="wishlist__adding-form">
+				<div className="wishlist__adding-form__title">Adding new Wishlist</div>
+				<div className="wishlist__adding-form__input-with-button">
+					<SuperInput callBack={setWishlistTitle} value={wishlistTitle}
+								onKeyDownCallBack={(e) => {keyDownForAddWishlist(e)}}/>
+					<SuperButton callBack={addNewWishList} name={"Add"}/>
+				</div>
+
 			</div>
 			<div className="wishlist__cards">
 				{wishLists.sort((a, b) => a.order - b.order).map((wl) => {
-					const wishesWhatWeWantToSee = wl.filterByStatus === 'All' ? wishes[wl.id] : wishes[wl.id].filter(el => el.status === wl.filterByStatus)
+					const wishesWhatWeWantToSee = wl.filterByStatus === 'All' ? wishes[wl.id]
+						: wishes[wl.id].filter(el => el.status === wl.filterByStatus)
 					const wishesWhatWeWantToSeeGeneral = wl.filterByActivity === 'All' ? wishesWhatWeWantToSee :
 						wishesWhatWeWantToSee.filter(el => wl.filterByActivity === 'Active' ? !el.checked : el.checked)
 					return <div
 						key={wl.id}
-						onDragStart={(e) => {onDragStartHandler(e, wl)}}
-						onDragEnd={(e) => {onDragEnd(e)}						}
-						onDragLeave={(e) => {onDragLeave(e)}}
-						onDragOver={(e) => {
-                            e.preventDefault()
-							e.currentTarget.style.background = 'lightgrey'
-						}}
-						onDrop={(e) => {onDropHandler(e, wl)}}
 						draggable={true}
+						onDragStart={(e) => {onDragStartHandler(e, wl)}}
+						onDragLeave={(e) => {onDragLeaveHandler(e)}}
+						onDragEnd={(e) => {onDragEndHandler(e)}}
+						onDragOver={(e) => {onDragOverHandler(e)}}
+						onDrop={(e) => {onDropHandler(e, wl)}}
 					>
                         <WishList
 						key={wl.id}

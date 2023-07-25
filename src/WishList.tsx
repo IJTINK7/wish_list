@@ -5,16 +5,13 @@ import SuperCheckbox from "./superComponents/SuperCheckbox";
 import {SuperSelect} from "./superComponents/SuperSelect";
 import {EditableSpan} from "./superComponents/Editable";
 import {SuperButton} from "./superComponents/SuperButton";
-import {useDispatch, useSelector} from "react-redux";
-import {AppRootReducerType} from "./redux/store";
-import {WishesDataType, WishlistType} from "./AppWithRedux";
+import {useDispatch} from "react-redux";
 import {addNewWishAC, changeWishStatusAC, changeWishTitleAC, removeWishAC} from "./reducers/wishesReducer";
 import {
 	changeWishListFilterAC,
 	changeWishListTitleAC,
 	removeWishListAC
 } from "./reducers/wishListReducer";
-
 
 export type FilterTypeForSelect = "Usual" | "Important" | "Select"
 export type StatusTypeForSelect = "All" | "Active" | "Completed"
@@ -27,12 +24,6 @@ export type WishListPropsType = {
 }
 export const WishList = memo((props: WishListPropsType) => {
 	const dispatch = useDispatch()
-	const wishLists = useSelector<AppRootReducerType, WishlistType[]>((store) => {
-		return store.wishLists
-	})
-	const wishes = useSelector<AppRootReducerType, WishesDataType>((store) => {
-		return store.wishes
-	})
 	const [error, setError] = useState<string | null>(null)
 	const [oS, setOS] = useState<FilterTypeForSelect>("Select")
 	const addWishHandler = (newValue: string) => {
@@ -71,10 +62,15 @@ export const WishList = memo((props: WishListPropsType) => {
 		dispatch(removeWishListAC(props.wishlistID))
 	}
 	return (
-		<div className={"wishlist__cardsItem"}>
+		<div className="wishlist__cards-item">
 			<div className="wishlist__title-container">
-					<EditableSpan callBack={changeWishListTitleHandler} value={props.category}/>
+					<div className={"wishlist__title-container__editable-span"}>
+						<EditableSpan callBack={changeWishListTitleHandler} value={props.category}/>
+					</div>
+				<div className={"wishlist__title-container__super-button"}>
 					<SuperButton callBack={removeWishListHandler} name={"X"}/>
+				</div>
+
 			</div>
 			<div className="input-container">
 				<div>
@@ -93,13 +89,13 @@ export const WishList = memo((props: WishListPropsType) => {
 				<div className="table-container">
 					<div className="table-row heading">
 						<div className="row-item checkbox"></div>
-						<div className="row-item heading-title">Title</div>
-						<div className="row-item heading-status">Status</div>
+						<div className="row-item title">Title</div>
+						<div className="row-item status">Status</div>
 						<div className="row-item"></div>
 					</div>
 					{props.wishes.map((el: WishType) => {
 						return (
-							<div className="table-row" key={el.id}>
+							<div className={el.checked ? "table-row selected" : "table-row"} key={el.id}>
 								<div className="row-item checkbox">
 									<SuperCheckbox checked={el.checked} callBack={(value) => {
 										changeStatusHandler(el.id, value)
@@ -117,21 +113,26 @@ export const WishList = memo((props: WishListPropsType) => {
 					})}
 				</div>
 			</div>
-			<div className={"wishlist__cardFilters"}>
-				<div className={"wishlist__cardFilter1 wishlist__cardFilter"}>
-					<div className={"wishlist__cardTitle"}>FILTER BY IMPORTANT:</div>
-					<SuperSelect value={props.valueOfImportantFilter} options={[{value: 'All', label: "All"}, {
-						value: "Usual",
-						label: "Usual"
-					}, {value: 'Important', label: "Important"}]} callBack={onChangeFilterImportantHandler}/>
+			<div className={"wishlist__card-filters"}>
+				<div className={"wishlist__card-filter-container"}>
+					<div className={"wishlist__card-filter-title"}>FILTER BY IMPORTANCE:</div>
+					<div className={"wishlist__card-filter-select"}>
+						<SuperSelect value={props.valueOfImportantFilter} options={[{value: 'All', label: "All"}, {
+							value: "Usual",
+							label: "Usual"
+						}, {value: 'Important', label: "Important"}]} callBack={onChangeFilterImportantHandler}/>
+					</div>
 				</div>
-				<div className={"wishlist__cardFilter2 wishlist__cardFilter"}>
-					<div className={"wishlist__cardTitle"}>FILTER BY ACTIVITY:</div>
-					<SuperSelect value={props.activityFilter} options={[{value: 'All', label: "All"}, {
-						value: "Active",
-						label: "Active"
-					}, {value: 'Completed', label: "Completed"}]} callBack={onChangeActivityFilterHandler}/>
+				<div className={"wishlist__card-filter-container"}>
+					<div className={"wishlist__card-filter-title"}>FILTER BY ACTIVITY:</div>
+					<div className={"wishlist__card-filter-select"}>
+						<SuperSelect value={props.activityFilter} options={[{value: 'All', label: "All"}, {
+							value: "Active",
+							label: "Active"
+						}, {value: 'Completed', label: "Completed"}]} callBack={onChangeActivityFilterHandler}/>
+					</div>
 				</div>
+
 			</div>
 		</div>)
 })

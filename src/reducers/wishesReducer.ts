@@ -38,21 +38,21 @@ export const wishesReducer = (state: WishesDataType = initialState, action: Wish
 				[action.payload.wishlistID]: state[action.payload.wishlistID].filter(el => el.id !== action.payload.id)
 			}
 		}
-		case "CHANGE-WISH-STATUS" : {
-			return {
-				...state,
-				[action.payload.wishlistID]: state[action.payload.wishlistID].map(el => el.id === action.payload.wishId ? {
-					...el,
-					checked: action.payload.statusValue
-				} : el)
-			}
-		}
 		case "CHANGE-WISH-TITLE" : {
 			return {
 				...state,
 				[action.payload.wishlistID]: state[action.payload.wishlistID].map(el => el.id === action.payload.wishId ? {
 					...el,
 					title: action.payload.newTitle
+				} : el)
+			}
+		}
+		case "CHANGE-WISH-STATUS" : {
+			return {
+				...state,
+				[action.payload.wishlistID]: state[action.payload.wishlistID].map(el => el.id === action.payload.wishId ? {
+					...el,
+					checked: action.payload.statusValue
 				} : el)
 			}
 		}
@@ -84,17 +84,18 @@ export const removeWishAC = (wishlistID: string, id: string) => {
 	} as const
 }
 
-export type ChangeWishStatusACType = ReturnType<typeof changeWishStatusAC>
-export const changeWishStatusAC = (wishlistID: string, wishId: string, statusValue: boolean) => {
-	return {
-		type: 'CHANGE-WISH-STATUS',
-		payload: {wishlistID, wishId, statusValue}
-	} as const
-}
 export type ChangeWishTitleACType = ReturnType<typeof changeWishTitleAC>
 export const changeWishTitleAC = (wishlistID: string, wishId: string, newTitle: string) => {
 	return {
 		type: 'CHANGE-WISH-TITLE',
 		payload: {wishlistID, wishId, newTitle}
+	} as const
+}
+
+export type ChangeWishStatusACType = ReturnType<typeof changeWishStatusAC>
+export const changeWishStatusAC = (wishlistID: string, wishId: string, statusValue: boolean) => {
+	return {
+		type: 'CHANGE-WISH-STATUS',
+		payload: {wishlistID, wishId, statusValue}
 	} as const
 }
